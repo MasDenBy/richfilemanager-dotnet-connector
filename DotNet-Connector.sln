@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{3A307B07-284A-4006-8C6E-72C7CE1FED59}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{936019E7-66C4-4682-9A26-421CFF1952F9}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "MasDen.RichFileManager.DotNetConnector", "src\MasDen.RichFileManager.DotNetConnector\MasDen.RichFileManager.DotNetConnector.xproj", "{FABEA8F9-0BB3-46EE-9363-99A65802AB63}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FABEA8F9-0BB3-46EE-9363-99A65802AB63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FABEA8F9-0BB3-46EE-9363-99A65802AB63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FABEA8F9-0BB3-46EE-9363-99A65802AB63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FABEA8F9-0BB3-46EE-9363-99A65802AB63}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{FABEA8F9-0BB3-46EE-9363-99A65802AB63} = {3A307B07-284A-4006-8C6E-72C7CE1FED59}
+	EndGlobalSection
+EndGlobal
