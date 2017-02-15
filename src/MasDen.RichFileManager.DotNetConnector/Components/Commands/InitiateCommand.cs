@@ -9,13 +9,13 @@ namespace MasDen.RichFileManager.DotNetConnector.Components.Commands
 {
 	#region Usings
 
-	using System;
-	using System.Collections.Generic;
-	using System.Linq;
-	using System.Threading.Tasks;
 	using MasDen.RichFileManager.DotNetConnector.Entities;
+	using MasDen.RichFileManager.DotNetConnector.Entities.Configuration;
 	using MasDen.RichFileManager.DotNetConnector.Entities.Enumerations;
+
 	using Microsoft.AspNetCore.Http;
+
+	using Microsoft.Extensions.Options;
 
 	#endregion
 
@@ -25,15 +25,26 @@ namespace MasDen.RichFileManager.DotNetConnector.Components.Commands
 	/// <seealso cref="MasDen.RichFileManager.DotNetConnector.Components.Commands.CommandBase" />
 	public class InitiateCommand : CommandBase
 	{
+		#region Private Fields
+
+		/// <summary>
+		/// The configuration
+		/// </summary>
+		private readonly IOptions<FileManagerConfiguration> configuration;
+
+		#endregion
+
 		#region Constructors
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="InitiateCommand"/> class.
+		/// Initializes a new instance of the <see cref="InitiateCommand" /> class.
 		/// </summary>
 		/// <param name="query">The query.</param>
-		public InitiateCommand(IQueryCollection query)
+		/// <param name="configuration">The configuration.</param>
+		public InitiateCommand(IQueryCollection query, IOptions<FileManagerConfiguration> configuration)
 			: base(query)
 		{
+			this.configuration = configuration;
 		}
 
 		#endregion
@@ -47,6 +58,9 @@ namespace MasDen.RichFileManager.DotNetConnector.Components.Commands
 		public override CommandResult Execute()
 		{
 			var attributes = new InitiateCommandAttributes();
+			attributes.Config.Options = this.configuration.Value.Options;
+			attributes.Config.Security = this.configuration.Value.Security;
+			attributes.Config.Upload = this.configuration.Value.Upload;
 
 			return new CommandResult("/", CommandType.Initiate, attributes);
 		}

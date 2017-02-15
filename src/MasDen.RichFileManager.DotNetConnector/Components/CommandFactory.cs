@@ -12,8 +12,10 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 	using System;
 
 	using MasDen.RichFileManager.DotNetConnector.Components.Commands;
+	using MasDen.RichFileManager.DotNetConnector.Entities.Configuration;
 
 	using Microsoft.AspNetCore.Http;
+	using Microsoft.Extensions.Options;
 
 	#endregion
 
@@ -38,14 +40,14 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 		/// </summary>
 		/// <param name="query">The query.</param>
 		/// <returns>The <see cref="CommandBase"/> object.</returns>
-		public static CommandBase CreateCommand(IQueryCollection query)
+		public static CommandBase CreateCommand(IQueryCollection query, IOptions<FileManagerConfiguration> configuration)
 		{
 			var mode = query[ModeQueryKey];
 
 			switch (mode)
 			{
 				case "initiate":
-					return new InitiateCommand(query);
+					return new InitiateCommand(query, configuration);
 
 				case "getfolder":
 					return null;

@@ -12,8 +12,11 @@ namespace MasDen.RichFileManager.DotNetConnector
 	using System.Threading.Tasks;
 
 	using MasDen.RichFileManager.DotNetConnector.Components;
+	using MasDen.RichFileManager.DotNetConnector.Entities.Configuration;
 
 	using Microsoft.AspNetCore.Http;
+
+	using Microsoft.Extensions.Options;
 
 	using Newtonsoft.Json;
 
@@ -40,17 +43,24 @@ namespace MasDen.RichFileManager.DotNetConnector
 		/// </summary>
 		private readonly RequestDelegate next;
 
+		/// <summary>
+		/// The configuration
+		/// </summary>
+		private readonly IOptions<FileManagerConfiguration> configuration;
+
 		#endregion
 
 		#region Constructors
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="IgnoreRouteMiddleware"/> class.
+		/// Initializes a new instance of the <see cref="IgnoreRouteMiddleware" /> class.
 		/// </summary>
 		/// <param name="next">The next.</param>
-		public FileManagerMiddleware(RequestDelegate next)
+		/// <param name="configuration">The configuration.</param>
+		public FileManagerMiddleware(RequestDelegate next, IOptions<FileManagerConfiguration> configuration)
 		{
 			this.next = next;
+			this.configuration = configuration;
 		}
 
 		#endregion
@@ -67,10 +77,15 @@ namespace MasDen.RichFileManager.DotNetConnector
 			if (context.Request.Path.HasValue &&
 				context.Request.Path.Value.EndsWith(RequestPathEnd))
 			{
-				var command = CommandFactory.CreateCommand(context.Request.Query);
+				var command = CommandFactory.CreateCommand(context.Request.Query, this.configuration);
 				var response = command.Execute();
 
-				await context.Response.WriteAsync(JsonConvert.SerializeObject(response));
+				JsonSerializerSettings jsonSerializerOptions = new JsonSerializerSettings
+				{
+					NullValueHandling = NullValueHandling.Ignore
+				};
+
+				await context.Response.WriteAsync(JsonConvert.SerializeObject(response, jsonSerializerOptions));
 			}
 			else
 			{

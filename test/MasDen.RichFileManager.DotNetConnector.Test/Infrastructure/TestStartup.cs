@@ -9,7 +9,13 @@ namespace MasDen.RichFileManager.DotNetConnector.Test.Infrastructure
 {
 	#region Usings
 
+	using MasDen.RichFileManager.DotNetConnector.Entities.Configuration;
+
 	using Microsoft.AspNetCore.Builder;
+	using Microsoft.AspNetCore.Hosting;
+
+	using Microsoft.Extensions.Configuration;
+	using Microsoft.Extensions.DependencyInjection;
 
 	#endregion
 
@@ -18,7 +24,45 @@ namespace MasDen.RichFileManager.DotNetConnector.Test.Infrastructure
 	/// </summary>
 	public class TestStartup
 	{
+		#region Constructors
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Startup"/> class.
+		/// </summary>
+		/// <param name="hostingEnvironment">The hosting environment.</param>
+		public TestStartup(IHostingEnvironment hostingEnvironment)
+		{
+			var builder = new ConfigurationBuilder()
+				.SetBasePath(hostingEnvironment.ContentRootPath)
+				.AddJsonFile("appsettings.json");
+
+			this.Configuration = builder.Build();
+		}
+
+		#endregion
+
+		#region Public Properties
+
+		/// <summary>
+		/// Gets the configuration.
+		/// </summary>
+		/// <value>
+		/// The configuration.
+		/// </value>
+		public IConfigurationRoot Configuration { get; }
+
+		#endregion
+
 		#region Public Methods
+
+		/// <summary>
+		/// Configures the services.
+		/// </summary>
+		/// <param name="services">The services.</param>
+		public void ConfigureServices(IServiceCollection services)
+		{
+			services.Configure<FileManagerConfiguration>(this.Configuration.GetSection("Filemanager"));
+		}
 
 		/// <summary>
 		/// Configures the specified application.

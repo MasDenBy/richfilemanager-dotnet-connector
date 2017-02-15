@@ -19,6 +19,9 @@ namespace MasDen.RichFileManager.DotNetConnector.Entities.Enumerations
 	public enum CommandType
 	{
 		[EnumMember(Value = "initiate")]
-		Initiate
+		Initiate,
+
+		[EnumMember(Value = "getfolder")]
+		GetFolder,
 	}
 }
