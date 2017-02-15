@@ -1,17 +1,15 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="FileManagerMiddleware.cs" author="Ihar Maiseyeu">
+// <copyright file="FakeMiddleware.cs" author="Ihar Maiseyeu">
 //     Copyright Ihar Maiseyeu. All rights reserved.
 //     Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace MasDen.RichFileManager.DotNetConnector
+namespace MasDen.RichFileManager.DotNetConnector.Test.Infrastructure
 {
 	#region Usings
 
 	using System.Threading.Tasks;
-
-	using MasDen.RichFileManager.DotNetConnector.Components;
 
 	using Microsoft.AspNetCore.Http;
 
@@ -20,19 +18,10 @@ namespace MasDen.RichFileManager.DotNetConnector
 	#endregion
 
 	/// <summary>
-	/// Represents the middleware which catches the requests and execute commands for each request.
+	/// Represents the fake middleware.
 	/// </summary>
-	public class FileManagerMiddleware
+	public class FakeMiddleware
 	{
-		#region Constants
-
-		/// <summary>
-		/// The request path end
-		/// </summary>
-		private const string RequestPathEnd = "filemanager.dotnet";
-
-		#endregion
-
 		#region Private Fields
 
 		/// <summary>
@@ -45,10 +34,10 @@ namespace MasDen.RichFileManager.DotNetConnector
 		#region Constructors
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="IgnoreRouteMiddleware"/> class.
+		/// Initializes a new instance of the <see cref="FakeMiddleware"/> class.
 		/// </summary>
 		/// <param name="next">The next.</param>
-		public FileManagerMiddleware(RequestDelegate next)
+		public FakeMiddleware(RequestDelegate next)
 		{
 			this.next = next;
 		}
@@ -64,18 +53,7 @@ namespace MasDen.RichFileManager.DotNetConnector
 		/// <returns>Need to async/await operation</returns>
 		public async Task Invoke(HttpContext context)
 		{
-			if (context.Request.Path.HasValue &&
-				context.Request.Path.Value.EndsWith(RequestPathEnd))
-			{
-				var command = CommandFactory.CreateCommand(context.Request.Query);
-				var response = command.Execute();
-
-				await context.Response.WriteAsync(JsonConvert.SerializeObject(response));
-			}
-			else
-			{
-				await next.Invoke(context);
-			}
+			await context.Response.WriteAsync(JsonConvert.SerializeObject("fake"));
 		}
 
 		#endregion
