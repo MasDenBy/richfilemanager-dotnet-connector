@@ -14,6 +14,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F1E661BD-2CB1-482D-A2BC-18E81162ECBC}"
 	ProjectSection(SolutionItems) = preProject
 		global.json = global.json
+		SolutionAssemblyInfo.cs = SolutionAssemblyInfo.cs
 	EndProjectSection
 EndProject
 Global
