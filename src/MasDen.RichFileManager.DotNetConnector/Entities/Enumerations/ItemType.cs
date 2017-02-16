@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="CommandType.cs" author="Ihar Maiseyeu">
+// <copyright file="ItemType.cs" author="Ihar Maiseyeu">
 //     Copyright Ihar Maiseyeu. All rights reserved.
 //     Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 // </copyright>
@@ -14,14 +14,17 @@ namespace MasDen.RichFileManager.DotNetConnector.Entities.Enumerations
 	#endregion
 
 	/// <summary>
-	/// Represents the types of commands.
+	/// Represents the type of response item.
 	/// </summary>
-	public enum CommandType
+	public enum ItemType
 	{
 		[EnumMember(Value = "initiate")]
 		Initiate,
 
-		[EnumMember(Value = "getfolder")]
-		GetFolder,
+		[EnumMember(Value = "folder")]
+		Folder,
+
+		[EnumMember(Value = "file")]
+		File
 	}
 }

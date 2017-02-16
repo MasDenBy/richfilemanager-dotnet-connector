@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="CommandResultData.cs" author="Ihar Maiseyeu">
+// <copyright file="ItemData.cs" author="Ihar Maiseyeu">
 //     Copyright Ihar Maiseyeu. All rights reserved.
 //     Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 // </copyright>
@@ -20,20 +20,20 @@ namespace MasDen.RichFileManager.DotNetConnector.Entities
 	/// <summary>
 	/// Represents the data of response.
 	/// </summary>
-	public class CommandResultData
+	public class ItemData
 	{
 		#region Constructors
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="CommandResultData"/> class.
+		/// Initializes a new instance of the <see cref="ItemData"/> class.
 		/// </summary>
 		/// <param name="id">The identifier.</param>
 		/// <param name="type">The type.</param>
 		/// <param name="attributes">The attributes.</param>
-		public CommandResultData(string id, CommandType type, AttributesBase attributes)
+		public ItemData(string id, ItemType type, AttributesBase attributes)
 		{
 			this.Id = id;
-			this.CommandType = type;
+			this.ItemType = type;
 			this.Attributes = attributes;
 		}
 
@@ -58,7 +58,7 @@ namespace MasDen.RichFileManager.DotNetConnector.Entities
 		/// </value>
 		[JsonProperty("type")]
 		[JsonConverter(typeof(StringEnumConverter))]
-		public CommandType CommandType { get; private set; }
+		public ItemType ItemType { get; private set; }
 
 		/// <summary>
 		/// Gets the attributes.

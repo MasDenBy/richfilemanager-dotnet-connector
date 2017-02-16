@@ -30,7 +30,8 @@
     "buildOptions": {
         "copyToOutput": {
             "include": [
-                "appsettings.json"
+                "appsettings.json",
+                "TestData"
             ]
         }
     }

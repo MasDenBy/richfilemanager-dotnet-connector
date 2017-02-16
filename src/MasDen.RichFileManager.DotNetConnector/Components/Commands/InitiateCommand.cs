@@ -13,8 +13,6 @@ namespace MasDen.RichFileManager.DotNetConnector.Components.Commands
 	using MasDen.RichFileManager.DotNetConnector.Entities.Configuration;
 	using MasDen.RichFileManager.DotNetConnector.Entities.Enumerations;
 
-	using Microsoft.AspNetCore.Http;
-
 	using Microsoft.Extensions.Options;
 
 	#endregion
@@ -39,10 +37,8 @@ namespace MasDen.RichFileManager.DotNetConnector.Components.Commands
 		/// <summary>
 		/// Initializes a new instance of the <see cref="InitiateCommand" /> class.
 		/// </summary>
-		/// <param name="query">The query.</param>
 		/// <param name="configuration">The configuration.</param>
-		public InitiateCommand(IQueryCollection query, IOptions<FileManagerConfiguration> configuration)
-			: base(query)
+		public InitiateCommand(IOptions<FileManagerConfiguration> configuration)
 		{
 			this.configuration = configuration;
 		}
@@ -55,14 +51,16 @@ namespace MasDen.RichFileManager.DotNetConnector.Components.Commands
 		/// Executes this instance.
 		/// </summary>
 		/// <returns>The result of command.</returns>
-		public override CommandResult Execute()
+		public override string Execute()
 		{
 			var attributes = new InitiateCommandAttributes();
 			attributes.Config.Options = this.configuration.Value.Options;
 			attributes.Config.Security = this.configuration.Value.Security;
 			attributes.Config.Upload = this.configuration.Value.Upload;
 
-			return new CommandResult("/", CommandType.Initiate, attributes);
+			var result = new CommandResult("/", ItemType.Initiate, attributes);
+
+			return this.SerializeToJson(result);
 		}
 
 		#endregion

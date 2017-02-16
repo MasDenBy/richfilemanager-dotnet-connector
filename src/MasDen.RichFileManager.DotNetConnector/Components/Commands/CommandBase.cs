@@ -9,9 +9,7 @@ namespace MasDen.RichFileManager.DotNetConnector.Components.Commands
 {
 	#region Usings
 
-	using MasDen.RichFileManager.DotNetConnector.Entities;
-
-	using Microsoft.AspNetCore.Http;
+	using Newtonsoft.Json;
 
 	#endregion
 
@@ -20,35 +18,34 @@ namespace MasDen.RichFileManager.DotNetConnector.Components.Commands
 	/// </summary>
 	public abstract class CommandBase
 	{
-		#region Private Fields
-
-		/// <summary>
-		/// The query
-		/// </summary>
-		private readonly IQueryCollection query;
-
-		#endregion
-
-		#region Constructors
-
-		/// <summary>
-		/// Initializes a new instance of the <see cref="CommandBase"/> class.
-		/// </summary>
-		/// <param name="query">The query.</param>
-		protected CommandBase(IQueryCollection query)
-		{
-			this.query = query;
-		}
-
-		#endregion
-
 		#region Public Methods
 
 		/// <summary>
 		/// Executes this instance.
 		/// </summary>
 		/// <returns>The result of operation.</returns>
-		public abstract CommandResult Execute();
+		public abstract string Execute();
+
+		#endregion
+
+		#region Protected Methods
+
+		/// <summary>
+		/// Serializes the result to json.
+		/// </summary>
+		/// <typeparam name="T">The type of result</typeparam>
+		/// <param name="value">The value.</param>
+		/// <returns>The json.</returns>
+		protected string SerializeToJson<T>(T value) 
+			where T : class
+		{
+			JsonSerializerSettings jsonSerializerOptions = new JsonSerializerSettings
+			{
+				NullValueHandling = NullValueHandling.Ignore
+			};
+
+			return JsonConvert.SerializeObject(value, jsonSerializerOptions);
+		}
 
 		#endregion
 	}

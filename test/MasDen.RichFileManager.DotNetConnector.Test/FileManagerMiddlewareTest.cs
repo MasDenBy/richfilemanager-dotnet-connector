@@ -10,11 +10,13 @@ namespace MasDen.RichFileManager.DotNetConnector.Test
 	#region Usings
 
 	using System.Threading.Tasks;
-	using Entities;
-	using Entities.Enumerations;
+
+	using MasDen.RichFileManager.DotNetConnector.Test.Constants;
 	using MasDen.RichFileManager.DotNetConnector.Test.Infrastructure;
+
 	using Newtonsoft.Json;
 	using Newtonsoft.Json.Linq;
+
 	using NUnit.Framework;
 
 	#endregion
@@ -50,14 +52,13 @@ namespace MasDen.RichFileManager.DotNetConnector.Test
 			Assert.IsTrue(content.Contains("fake"));
 		}
 
+		/// <summary>
+		/// The test checks that initiate command return configuration.
+		/// </summary>
 		[Test]
 		public async Task Invoke_InitiateCommand_ReturnConfiguration()
 		{
-			var response = await this.Client.GetAsync($"{RichFileManagerConnectorUrl}?mode={CommandType.Initiate.ToString().ToLowerInvariant()}");
-			Assert.IsTrue(response.IsSuccessStatusCode);
-			var content = await response.Content.ReadAsStringAsync();
-
-			JObject result = JsonConvert.DeserializeObject<JObject>(content);
+			JObject result = await this.GetAsync($"{RichFileManagerConnectorUrl}?mode={ModeNames.Initiate}");
 
 			Assert.IsNotNull(result);
 			Assert.IsNotNull(result["data"]["attributes"]["config"]["options"]);
@@ -93,6 +94,81 @@ namespace MasDen.RichFileManager.DotNetConnector.Test
 			Assert.AreEqual(10, result["data"]["attributes"]["config"]["upload"]["fileSizeLimit"].Value<int>());
 			Assert.AreEqual("DISALLOW_ALL", result["data"]["attributes"]["config"]["upload"]["policy"].ToString());
 			Assert.AreEqual("restrictions", result["data"]["attributes"]["config"]["upload"]["restrictions"].ToString());
+		}
+
+		/// <summary>
+		/// The test checks that 'getfolder' command return content of root directory.
+		/// </summary>
+		/// <returns></returns>
+		[Test]
+		public async Task Invoke_GetFolder_ReturnsRootDirectory()
+		{
+			JObject result = await this.GetAsync($"{RichFileManagerConnectorUrl}?mode={ModeNames.GetFolder}&path=%2F");
+
+			Assert.IsNotNull(result);
+			Assert.IsNotNull(result["data"]);
+
+			foreach(var item in result["data"].AsJEnumerable())
+			{
+				Assert.IsNotNull(item["id"].Value<string>());
+				Assert.IsNotNull(item["type"].Value<string>());
+				Assert.IsNotNull(item["attributes"]);
+			}
+		}
+
+		/// <summary>
+		/// The test checks that if directory does not found, command push the error information.
+		/// </summary>
+		/// <returns></returns>
+		[Test]
+		public async Task Invoke_GetFolder_ReturnsErrorIfPathDoesNotExists()
+		{
+			JObject result = await this.GetAsync($"{RichFileManagerConnectorUrl}?mode={ModeNames.GetFolder}&path=%2Fnotexistspath");
+
+			Assert.IsNotNull(result);
+			Assert.IsNotNull(result["errors"]);
+			Assert.AreEqual("server", result["errors"].First["id"].ToString());
+			Assert.AreEqual("500", result["errors"].First["code"].ToString());
+			Assert.AreEqual("Directory '/notexistspath' not found", result["errors"].First["title"].ToString());
+		}
+
+		/// <summary>
+		/// The test checks that 'getfolder' command return the content of folder inside root directory.
+		/// </summary>
+		/// <returns></returns>
+		[Test]
+		public async Task Invoke_GetFolder_ReturnsContentOfDirectoryInsideRoot()
+		{
+			JObject result = await this.GetAsync($"{RichFileManagerConnectorUrl}?mode={ModeNames.GetFolder}&path=%2FFolder1");
+
+			Assert.IsNotNull(result);
+			Assert.IsNotNull(result["data"]);
+
+			foreach (var item in result["data"].AsJEnumerable())
+			{
+				Assert.IsNotNull(item["id"].Value<string>());
+				Assert.IsNotNull(item["type"].Value<string>());
+				Assert.IsNotNull(item["attributes"]);
+			}
+		}
+
+		#endregion
+
+		#region Private Methods
+
+		/// <summary>
+		/// Gets the asynchronous.
+		/// </summary>
+		/// <param name="requestUri">The request URI.</param>
+		/// <returns>The response data</returns>
+		private async Task<JObject> GetAsync(string requestUri)
+		{
+			var response = await this.Client.GetAsync(requestUri);
+
+			Assert.IsTrue(response.IsSuccessStatusCode);
+			var content = await response.Content.ReadAsStringAsync();
+
+			return JsonConvert.DeserializeObject<JObject>(content);
 		}
 
 		#endregion

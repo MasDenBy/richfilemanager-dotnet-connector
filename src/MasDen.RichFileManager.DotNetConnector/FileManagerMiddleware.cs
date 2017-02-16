@@ -9,14 +9,13 @@ namespace MasDen.RichFileManager.DotNetConnector
 {
 	#region Usings
 
+	using System;
 	using System.Threading.Tasks;
 
 	using MasDen.RichFileManager.DotNetConnector.Components;
-	using MasDen.RichFileManager.DotNetConnector.Entities.Configuration;
+	using MasDen.RichFileManager.DotNetConnector.Entities;
 
 	using Microsoft.AspNetCore.Http;
-
-	using Microsoft.Extensions.Options;
 
 	using Newtonsoft.Json;
 
@@ -43,11 +42,6 @@ namespace MasDen.RichFileManager.DotNetConnector
 		/// </summary>
 		private readonly RequestDelegate next;
 
-		/// <summary>
-		/// The configuration
-		/// </summary>
-		private readonly IOptions<FileManagerConfiguration> configuration;
-
 		#endregion
 
 		#region Constructors
@@ -56,11 +50,9 @@ namespace MasDen.RichFileManager.DotNetConnector
 		/// Initializes a new instance of the <see cref="IgnoreRouteMiddleware" /> class.
 		/// </summary>
 		/// <param name="next">The next.</param>
-		/// <param name="configuration">The configuration.</param>
-		public FileManagerMiddleware(RequestDelegate next, IOptions<FileManagerConfiguration> configuration)
+		public FileManagerMiddleware(RequestDelegate next)
 		{
 			this.next = next;
-			this.configuration = configuration;
 		}
 
 		#endregion
@@ -77,15 +69,19 @@ namespace MasDen.RichFileManager.DotNetConnector
 			if (context.Request.Path.HasValue &&
 				context.Request.Path.Value.EndsWith(RequestPathEnd))
 			{
-				var command = CommandFactory.CreateCommand(context.Request.Query, this.configuration);
-				var response = command.Execute();
-
-				JsonSerializerSettings jsonSerializerOptions = new JsonSerializerSettings
+				try
 				{
-					NullValueHandling = NullValueHandling.Ignore
-				};
+					var command = CommandFactory.CreateCommand(context);
 
-				await context.Response.WriteAsync(JsonConvert.SerializeObject(response, jsonSerializerOptions));
+					await context.Response.WriteAsync(command.Execute());
+				}
+				catch (Exception ex)
+				{
+					var data = new ErrorData() { Code = "500", Id = "server", Title = ex.Message };
+					var response = "{\"errors\":[" + JsonConvert.SerializeObject(data) + "]}";
+
+					await context.Response.WriteAsync(response);
+				}
 			}
 			else
 			{

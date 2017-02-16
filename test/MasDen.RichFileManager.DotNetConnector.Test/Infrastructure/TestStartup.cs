@@ -62,6 +62,8 @@ namespace MasDen.RichFileManager.DotNetConnector.Test.Infrastructure
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.Configure<FileManagerConfiguration>(this.Configuration.GetSection("Filemanager"));
+
+			services.AddRichFileManager();
 		}
 
 		/// <summary>

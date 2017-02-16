@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="CommandResult.cs" author="Ihar Maiseyeu">
+// <copyright file="CommandResultCollection.cs" author="Ihar Maiseyeu">
 //     Copyright Ihar Maiseyeu. All rights reserved.
 //     Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 // </copyright>
@@ -9,27 +9,26 @@ namespace MasDen.RichFileManager.DotNetConnector.Entities
 {
 	#region Usings
 
-	using MasDen.RichFileManager.DotNetConnector.Entities.Enumerations;
+	using System.Collections.Generic;
 
 	using Newtonsoft.Json;
 
 	#endregion
 
 	/// <summary>
-	/// Represents the result of command.
+	/// Represents the result of command with array of data.
 	/// </summary>
-	public class CommandResult
+	public class CommandResultCollection
 	{
 		#region Constructors
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="CommandResult" /> class.
+		/// Initializes a new instance of the <see cref="CommandResultCollection" /> class.
 		/// </summary>
-		/// <param name="id">The identifier.</param>
-		/// <param name="type">The type.</param>
-		public CommandResult(string id, ItemType type, AttributesBase attributes)
+		/// <param name="data">The data.</param>
+		public CommandResultCollection(ICollection<ItemData> data)
 		{
-			this.Data = new ItemData(id, type, attributes);
+			this.Data = data;
 		}
 
 		#endregion
@@ -43,7 +42,7 @@ namespace MasDen.RichFileManager.DotNetConnector.Entities
 		/// The data.
 		/// </value>
 		[JsonProperty("data")]
-		public ItemData Data { get; private set; }
+		public ICollection<ItemData> Data { get; private set; }
 
 		#endregion
 	}
