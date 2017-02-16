@@ -100,7 +100,7 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 					Name = dir.Name,
 					Path = folderPath,
 					Readable = true,
-					TimeStamp = (Int32)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds,
+					TimeStamp = FileManager.GetTimeStamp(dir.CreationTime),
 					Writable = true
 				};
 				result.Add(new ItemData(folderPath, ItemType.Folder, attributes));
@@ -118,7 +118,7 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 					Extension = file.Extension.Replace(".", string.Empty),
 					Path = filePath,
 					Readable = true,
-					TimeStamp = (Int32)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds,
+					TimeStamp = FileManager.GetTimeStamp(file.CreationTime),
 					Writable = true,
 					Size = file.Length
 				};
@@ -155,6 +155,16 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 			}
 
 			return path.Replace("/", @"\");
+		}
+
+		/// <summary>
+		/// Gets the time stamp.
+		/// </summary>
+		/// <param name="date">The date.</param>
+		/// <returns>The time stamp</returns>
+		private static int GetTimeStamp(DateTime date)
+		{
+			return (Int32)(date.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
 		}
 
 		/// <summary>
