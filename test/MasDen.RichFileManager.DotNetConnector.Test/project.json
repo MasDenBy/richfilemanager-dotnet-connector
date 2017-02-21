@@ -31,7 +31,7 @@
         "copyToOutput": {
             "include": [
                 "appsettings.json",
-                "TestData"
+                "wwwroot"
             ]
         }
     }

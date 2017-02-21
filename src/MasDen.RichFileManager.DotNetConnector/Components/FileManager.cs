@@ -235,7 +235,7 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 		/// <returns>The full path to root directory.</returns>
 		private string GetRootPath()
 		{
-			return Path.Combine(this.hostingEnvironment.ContentRootPath, this.configuration.Value.RootPath);
+			return Path.Combine(this.hostingEnvironment.WebRootPath, this.configuration.Value.RootPath);
 		}
 
 		#endregion
