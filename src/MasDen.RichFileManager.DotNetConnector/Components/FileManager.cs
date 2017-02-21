@@ -91,24 +91,22 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 
 			foreach (var dir in directoryInfo.GetDirectories())
 			{
-				string folderPath = FileManager.PrepareRelativePath(Path.Combine(path, dir.Name));
-
 				FolderAttributes attributes = new FolderAttributes()
 				{
 					Created = dir.CreationTime,
 					Modified = dir.LastWriteTime,
 					Name = dir.Name,
-					Path = folderPath,
+					Path = this.PrepareRelativePath(Path.Combine(path, dir.Name)),
 					Readable = true,
 					TimeStamp = FileManager.GetTimeStamp(dir.CreationTime),
 					Writable = true
 				};
-				result.Add(new ItemData(folderPath, ItemType.Folder, attributes));
+				result.Add(new FolderItemData(FileManager.GetItemIdentifier(path, dir.Name), attributes));
 			}
 
 			foreach (var file in directoryInfo.GetFiles())
 			{
-				string filePath = FileManager.PrepareRelativePath(Path.Combine(path, file.Name));
+				string filePath = this.PrepareRelativePath(Path.Combine(path, file.Name));
 
 				Entities.FileAttributes attributes = new Entities.FileAttributes()
 				{
@@ -116,7 +114,7 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 					Modified = file.LastWriteTime,
 					Name = file.Name,
 					Extension = file.Extension.Replace(".", string.Empty),
-					Path = filePath,
+					Path = this.PrepareRelativePath(Path.Combine(path, file.Name)),
 					Readable = true,
 					TimeStamp = FileManager.GetTimeStamp(file.CreationTime),
 					Writable = true,
@@ -132,7 +130,7 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 					}
 				}
 
-				result.Add(new ItemData(filePath, ItemType.File, attributes));
+				result.Add(new FileItemData(FileManager.GetItemIdentifier(path, file.Name), attributes));
 			}
 
 			return result;
@@ -149,10 +147,7 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 		/// <returns>The path prepared in right format.</returns>
 		private static string PreparePhysicalPath(string path)
 		{
-			if(path.StartsWith("/"))
-			{
-				path = path.Substring(1, path.Length - 1);
-			}
+			path = FileManager.RemoveForwardSlashFromStart(path);
 
 			return path.Replace("/", @"\");
 		}
@@ -168,13 +163,45 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 		}
 
 		/// <summary>
+		/// Removes the forward slash from start.
+		/// </summary>
+		/// <param name="value">The value.</param>
+		/// <returns>The values without forward slash in the start.</returns>
+		private static string RemoveForwardSlashFromStart(string value)
+		{
+			if (value.StartsWith("/"))
+			{
+				return value.Substring(1, value.Length - 1);
+			}
+
+			return value;
+		}
+
+		/// <summary>
+		/// Gets the item identifier.
+		/// </summary>
+		/// <param name="parentPath">The parent path.</param>
+		/// <param name="itemPath">The item path.</param>
+		/// <returns>
+		/// Returns the item identifier.
+		/// </returns>
+		private static string GetItemIdentifier(string parentPath, string itemPath)
+		{
+			return (parentPath.EndsWith("/") ? parentPath : $"{parentPath}/") + itemPath;
+		}
+
+		/// <summary>
 		/// Prepares the relative path.
 		/// </summary>
 		/// <param name="path">The path.</param>
 		/// <returns>The path without incorrect symbols</returns>
-		private static string PrepareRelativePath(string path)
+		private string PrepareRelativePath(string path)
 		{
-			return path.Replace("\\", "/");
+			string rootFolder = !this.configuration.Value.RootPath.StartsWith("\\") 
+				? $"\\{this.configuration.Value.RootPath}" 
+				: this.configuration.Value.RootPath;
+
+			return Path.Combine(rootFolder, FileManager.RemoveForwardSlashFromStart(path)).Replace("\\", "/");
 		}
 
 		/// <summary>

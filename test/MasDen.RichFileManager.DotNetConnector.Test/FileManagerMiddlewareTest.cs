@@ -113,6 +113,8 @@ namespace MasDen.RichFileManager.DotNetConnector.Test
 				Assert.IsNotNull(item["id"].Value<string>());
 				Assert.IsNotNull(item["type"].Value<string>());
 				Assert.IsNotNull(item["attributes"]);
+
+				FileManagerMiddlewareTest.ValidateItemDataId(item);
 			}
 		}
 
@@ -147,14 +149,31 @@ namespace MasDen.RichFileManager.DotNetConnector.Test
 			foreach (var item in result["data"].AsJEnumerable())
 			{
 				Assert.IsNotNull(item["id"].Value<string>());
+				Assert.IsTrue(item["id"].Value<string>().StartsWith("/Folder1/"));
 				Assert.IsNotNull(item["type"].Value<string>());
 				Assert.IsNotNull(item["attributes"]);
+
+				FileManagerMiddlewareTest.ValidateItemDataId(item);
 			}
 		}
 
 		#endregion
 
 		#region Private Methods
+
+		/// <summary>
+		/// Validates the item data identifier.
+		/// </summary>
+		/// <param name="token">The token.</param>
+		private static void ValidateItemDataId(JToken token)
+		{
+			Assert.IsTrue(token["id"].Value<string>().StartsWith("/"));
+
+			if (token["type"].Value<string>().Equals("folder"))
+			{
+				Assert.IsTrue(token["id"].Value<string>().EndsWith("/"));
+			}
+		}
 
 		/// <summary>
 		/// Gets the asynchronous.
