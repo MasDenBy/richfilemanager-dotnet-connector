@@ -35,5 +35,20 @@ namespace MasDen.RichFileManager.DotNetConnector.Interfaces
 		/// <param name="path">The path.</param>
 		/// <returns>The <see cref="FileData"/> object.</returns>
 		FileData GetFileData(string path);
+
+		/// <summary>
+		/// Creates the directory.
+		/// </summary>
+		/// <param name="path">The path.</param>
+		/// <param name="folderName">Name of the folder.</param>
+		/// <returns>The <see cref="ItemData"/> with all details of created folder.</returns>
+		ItemData CreateDirectory(string path, string folderName);
+
+		/// <summary>
+		/// Deletes the specified path.
+		/// </summary>
+		/// <param name="path">The path.</param>
+		/// <returns>The <see cref="ItemData"/> object with all information about deleted resource.</returns>
+		ItemData Delete(string path);
 	}
 }

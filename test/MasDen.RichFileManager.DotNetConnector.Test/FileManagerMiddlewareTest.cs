@@ -171,6 +171,30 @@ namespace MasDen.RichFileManager.DotNetConnector.Test
 			Assert.AreEqual("attachment", response.Content.Headers.ContentDisposition.DispositionType);
 		}
 
+		/// <summary>
+		/// The test checks functionalities of adding and deleting.
+		/// </summary>
+		[Test]
+		public async Task Should_Create_And_Delete_Folder()
+		{
+			var folder = await this.GetAsync($"{RichFileManagerConnectorUrl}?mode={ModeNames.AddFolder}&path=%2F&name=NewFolder");
+
+			Assert.IsNotNull(folder);
+			Assert.IsNotNull(folder["data"]);
+			Assert.IsNotNull(folder["data"]["id"].Value<string>());
+			Assert.IsNotNull(folder["data"]["type"].Value<string>());
+			Assert.AreEqual("folder", folder["data"]["type"].Value<string>());
+			Assert.IsNotNull(folder["data"]["attributes"]);
+			FileManagerMiddlewareTest.ValidateItemDataId(folder["data"]);
+
+			var deletedFolder = await this.GetAsync($"{RichFileManagerConnectorUrl}?mode={ModeNames.Delete}&path=%2FNewFolder");
+			Assert.IsNotNull(deletedFolder);
+			Assert.AreEqual(folder["data"]["id"].Value<string>(), deletedFolder["data"]["id"].Value<string>());
+			Assert.AreEqual(folder["data"]["type"].Value<string>(), deletedFolder["data"]["type"].Value<string>());
+			Assert.AreEqual(folder["data"]["attributes"]["name"].Value<string>(), deletedFolder["data"]["attributes"]["name"].Value<string>());
+			Assert.AreEqual(folder["data"]["attributes"]["path"].Value<string>(), deletedFolder["data"]["attributes"]["path"].Value<string>());
+		}
+
 		#endregion
 
 		#region Private Methods

@@ -91,17 +91,7 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 
 			foreach (var dir in directoryInfo.GetDirectories())
 			{
-				FolderAttributes attributes = new FolderAttributes()
-				{
-					Created = dir.CreationTime,
-					Modified = dir.LastWriteTime,
-					Name = dir.Name,
-					Path = this.PrepareRelativePath(Path.Combine(path, dir.Name)),
-					Readable = true,
-					TimeStamp = FileManager.GetTimeStamp(dir.CreationTime),
-					Writable = true
-				};
-				result.Add(new FolderItemData(FileManager.GetItemIdentifier(path, dir.Name), attributes));
+				result.Add(this.CreateFolderItemData(dir, path));
 			}
 
 			foreach (var file in directoryInfo.GetFiles())
@@ -160,6 +150,61 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 				FileName = fileInfo.Name,
 				FilePath = serverPath
 			};
+		}
+
+		/// <summary>
+		/// Creates the directory.
+		/// </summary>
+		/// <param name="path">The path.</param>
+		/// <param name="folderName">Name of the folder.</param>
+		/// <returns>
+		/// The <see cref="ItemData" /> with all details of created folder.
+		/// </returns>
+		public ItemData CreateDirectory(string path, string folderName)
+		{
+			string rootPath = this.GetServerPath(path);
+			string directoryPath = Path.Combine(rootPath, folderName);
+
+			if(Directory.Exists(directoryPath))
+			{
+				throw new InvalidOperationException($"The directory {folderName} has already exists.");
+			}
+
+			Directory.CreateDirectory(directoryPath);
+			DirectoryInfo dirInfo = new DirectoryInfo(directoryPath);
+
+			return this.CreateFolderItemData(dirInfo, path);
+		}
+
+		/// <summary>
+		/// Deletes the specified path.
+		/// </summary>
+		/// <param name="path">The path.</param>
+		/// <returns>
+		/// The <see cref="ItemData" /> object with all information about deleted resource.
+		/// </returns>
+		public ItemData Delete(string path)
+		{
+			string fullPath = this.GetServerPath(path);
+
+			System.IO.FileAttributes attributes = File.GetAttributes(fullPath);
+
+			if((attributes & System.IO.FileAttributes.Directory) == System.IO.FileAttributes.Directory)
+			{
+				DirectoryInfo dirInfo = new DirectoryInfo(fullPath);
+
+				Directory.Delete(fullPath);
+
+				return this.CreateFolderItemData(dirInfo, path.Replace(dirInfo.Name, string.Empty));
+			}
+			else
+			{
+				FileInfo fileInfo = new FileInfo(fullPath);
+
+				File.Delete(fullPath);
+
+				return this.CreateFileItemData(fileInfo, path.Replace(fileInfo.Name, string.Empty));
+			}
 		}
 
 		#endregion
@@ -228,6 +273,63 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 			new FileExtensionContentTypeProvider().TryGetContentType(fileName, out contentType);
 
 			return contentType ?? "application/octet-stream";
+		}
+
+		/// <summary>
+		/// Creates the folder item data.
+		/// </summary>
+		/// <param name="dir">The dir.</param>
+		/// <param name="path">The path.</param>
+		/// <returns>The <see cref="FolderItemData"/> object with all information about folder.</returns>
+		private FolderItemData CreateFolderItemData(DirectoryInfo dir, string path)
+		{
+			FolderAttributes attributes = new FolderAttributes()
+			{
+				Created = dir.CreationTime,
+				Modified = dir.LastWriteTime,
+				Name = dir.Name,
+				Path = this.PrepareRelativePath(Path.Combine(path, dir.Name)),
+				Readable = true,
+				TimeStamp = FileManager.GetTimeStamp(dir.CreationTime),
+				Writable = true
+			};
+
+			return new FolderItemData(FileManager.GetItemIdentifier(path, dir.Name), attributes);
+		}
+
+		/// <summary>
+		/// Creates the file item data.
+		/// </summary>
+		/// <param name="file">The file.</param>
+		/// <param name="path">The path.</param>
+		/// <returns>The <see cref="FileItemData"/> object.</returns>
+		private FileItemData CreateFileItemData(FileInfo file, string path)
+		{
+			string filePath = this.PrepareRelativePath(Path.Combine(path, file.Name));
+
+			Entities.FileAttributes attributes = new Entities.FileAttributes()
+			{
+				Created = file.CreationTime,
+				Modified = file.LastWriteTime,
+				Name = file.Name,
+				Extension = file.Extension.Replace(".", string.Empty),
+				Path = this.PrepareRelativePath(Path.Combine(path, file.Name)),
+				Readable = true,
+				TimeStamp = FileManager.GetTimeStamp(file.CreationTime),
+				Writable = true,
+				Size = file.Length
+			};
+
+			if (this.IsImage(file))
+			{
+				using (Image img = Image.FromFile(file.FullName))
+				{
+					attributes.Height = img.Height;
+					attributes.Width = img.Width;
+				}
+			}
+
+			return new FileItemData(FileManager.GetItemIdentifier(path, file.Name), attributes);
 		}
 
 		/// <summary>

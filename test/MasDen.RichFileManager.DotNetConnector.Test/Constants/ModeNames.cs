@@ -26,5 +26,15 @@ namespace MasDen.RichFileManager.DotNetConnector.Test.Constants
 		/// The get image mode name
 		/// </summary>
 		public static string GetImage = "getimage";
+
+		/// <summary>
+		/// The add folder mode name.
+		/// </summary>
+		public static string AddFolder = "addfolder";
+
+		/// <summary>
+		/// The delete mode name.
+		/// </summary>
+		public static string Delete = "delete";
 	}
 }

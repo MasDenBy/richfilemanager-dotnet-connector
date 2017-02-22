@@ -23,6 +23,15 @@ namespace MasDen.RichFileManager.DotNetConnector.Entities
 		#region Constructors
 
 		/// <summary>
+		/// Initializes a new instance of the <see cref="CommandResult"/> class.
+		/// </summary>
+		/// <param name="data">The data.</param>
+		public CommandResult(ItemData data)
+		{
+			this.Data = data;
+		}
+
+		/// <summary>
 		/// Initializes a new instance of the <see cref="CommandResult" /> class.
 		/// </summary>
 		/// <param name="id">The identifier.</param>

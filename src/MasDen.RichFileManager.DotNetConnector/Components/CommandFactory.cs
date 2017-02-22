@@ -57,6 +57,12 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 				case "getimage":
 					return new GetImageCommand(context.Request.Query, context.RequestServices.GetService<IFileManager>());
 
+				case "addfolder":
+					return new AddFolderCommand(context.Request.Query, context.RequestServices.GetService<IFileManager>());
+
+				case "delete":
+					return new DeleteCommand(context.Request.Query, context.RequestServices.GetService<IFileManager>());
+
 				default:
 					throw new InvalidOperationException();
 			}
