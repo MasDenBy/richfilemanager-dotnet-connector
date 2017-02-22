@@ -9,6 +9,10 @@ namespace MasDen.RichFileManager.DotNetConnector.Components.Commands
 {
 	#region Usings
 
+	using System.Threading.Tasks;
+
+	using Microsoft.AspNetCore.Http;
+
 	using Newtonsoft.Json;
 
 	#endregion
@@ -21,10 +25,10 @@ namespace MasDen.RichFileManager.DotNetConnector.Components.Commands
 		#region Public Methods
 
 		/// <summary>
-		/// Executes this instance.
+		/// Executes the specified response.
 		/// </summary>
-		/// <returns>The result of operation.</returns>
-		public abstract string Execute();
+		/// <param name="response">The HTTP response.</param>
+		public abstract Task Execute(HttpResponse response);
 
 		#endregion
 

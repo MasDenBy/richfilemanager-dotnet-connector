@@ -21,7 +21,7 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 	using MasDen.RichFileManager.DotNetConnector.Interfaces;
 
 	using Microsoft.AspNetCore.Hosting;
-
+	using Microsoft.AspNetCore.StaticFiles;
 	using Microsoft.Extensions.Options;
 
 	#endregion
@@ -136,6 +136,32 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 			return result;
 		}
 
+		/// <summary>
+		/// Gets the file data.
+		/// </summary>
+		/// <param name="path">The path.</param>
+		/// <returns>
+		/// The <see cref="FileData" /> object.
+		/// </returns>
+		public FileData GetFileData(string path)
+		{
+			var serverPath = this.GetServerPath(path);
+
+			if(!File.Exists(serverPath))
+			{
+				throw new InvalidOperationException($"The file {path} does not exists.");
+			}
+
+			FileInfo fileInfo = new FileInfo(serverPath);
+
+			return new FileData()
+			{
+				ContentType = FileManager.GetContentType(fileInfo.Name),
+				FileName = fileInfo.Name,
+				FilePath = serverPath
+			};
+		}
+
 		#endregion
 
 		#region Private Fields
@@ -188,6 +214,20 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 		private static string GetItemIdentifier(string parentPath, string itemPath)
 		{
 			return (parentPath.EndsWith("/") ? parentPath : $"{parentPath}/") + itemPath;
+		}
+
+		/// <summary>
+		/// Gets the type of the content.
+		/// </summary>
+		/// <param name="fileName">Name of the file.</param>
+		/// <returns>The content type pf specified file.</returns>
+		private static string GetContentType(string fileName)
+		{
+			string contentType;
+
+			new FileExtensionContentTypeProvider().TryGetContentType(fileName, out contentType);
+
+			return contentType ?? "application/octet-stream";
 		}
 
 		/// <summary>

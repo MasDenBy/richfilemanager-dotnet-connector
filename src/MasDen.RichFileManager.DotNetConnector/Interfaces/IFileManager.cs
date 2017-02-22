@@ -28,5 +28,12 @@ namespace MasDen.RichFileManager.DotNetConnector.Interfaces
 		/// The collection of <see cref="ItemData"/> from path.
 		/// </returns>
 		ICollection<ItemData> GetFolder(string path);
+
+		/// <summary>
+		/// Gets the file data.
+		/// </summary>
+		/// <param name="path">The path.</param>
+		/// <returns>The <see cref="FileData"/> object.</returns>
+		FileData GetFileData(string path);
 	}
 }

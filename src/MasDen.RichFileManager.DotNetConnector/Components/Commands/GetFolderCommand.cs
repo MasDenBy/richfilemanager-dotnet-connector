@@ -9,6 +9,8 @@ namespace MasDen.RichFileManager.DotNetConnector.Components.Commands
 {
 	#region Usings
 
+	using System.Threading.Tasks;
+
 	using MasDen.RichFileManager.DotNetConnector.Entities;
 	using MasDen.RichFileManager.DotNetConnector.Interfaces;
 
@@ -54,16 +56,14 @@ namespace MasDen.RichFileManager.DotNetConnector.Components.Commands
 		#region CommandBase Members
 
 		/// <summary>
-		/// Executes this instance.
+		/// Executes the specified response.
 		/// </summary>
-		/// <returns>
-		/// The result of operation.
-		/// </returns>
-		public override string Execute()
+		/// <param name="response">The HTTP response.</param>
+		public override async Task Execute(HttpResponse response)
 		{
 			var result = new CommandResultCollection(this.fileManager.GetFolder(this.path));
 
-			return this.SerializeToJson(result);
+			await response.WriteAsync(this.SerializeToJson(result));
 		}
 
 		#endregion

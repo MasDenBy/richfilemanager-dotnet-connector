@@ -137,7 +137,6 @@ namespace MasDen.RichFileManager.DotNetConnector.Test
 		/// <summary>
 		/// The test checks that 'getfolder' command return the content of folder inside root directory.
 		/// </summary>
-		/// <returns></returns>
 		[Test]
 		public async Task Invoke_GetFolder_ReturnsContentOfDirectoryInsideRoot()
 		{
@@ -155,6 +154,21 @@ namespace MasDen.RichFileManager.DotNetConnector.Test
 
 				FileManagerMiddlewareTest.ValidateItemDataId(item);
 			}
+		}
+
+		/// <summary>
+		/// The test checks that 'getimage' command return image file.
+		/// </summary>
+		/// <returns></returns>
+		[Test]
+		public async Task Invoke_GetImage_ReturnImage()
+		{
+			var response = await this.Client.GetAsync($"{RichFileManagerConnectorUrl}?mode={ModeNames.GetImage}&path=%2Fdotnetfoundation.png");
+			Assert.IsTrue(response.IsSuccessStatusCode);
+			Assert.AreEqual("image/png", response.Content.Headers.ContentType.MediaType);
+			Assert.IsTrue(response.Content.Headers.ContentLength > 0);
+			Assert.AreEqual("dotnetfoundation.png", response.Content.Headers.ContentDisposition.FileName);
+			Assert.AreEqual("attachment", response.Content.Headers.ContentDisposition.DispositionType);
 		}
 
 		#endregion

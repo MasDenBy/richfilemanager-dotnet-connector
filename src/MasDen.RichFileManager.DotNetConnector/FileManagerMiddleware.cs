@@ -73,7 +73,7 @@ namespace MasDen.RichFileManager.DotNetConnector
 				{
 					var command = CommandFactory.CreateCommand(context);
 
-					await context.Response.WriteAsync(command.Execute());
+					await command.Execute(context.Response);
 				}
 				catch (Exception ex)
 				{

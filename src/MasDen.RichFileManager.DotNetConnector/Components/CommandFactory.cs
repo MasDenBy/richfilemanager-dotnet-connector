@@ -54,6 +54,9 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 				case "getfolder":
 					return new GetFolderCommand(context.Request.Query, context.RequestServices.GetService<IFileManager>());
 
+				case "getimage":
+					return new GetImageCommand(context.Request.Query, context.RequestServices.GetService<IFileManager>());
+
 				default:
 					throw new InvalidOperationException();
 			}

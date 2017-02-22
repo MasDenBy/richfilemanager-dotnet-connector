@@ -9,9 +9,13 @@ namespace MasDen.RichFileManager.DotNetConnector.Components.Commands
 {
 	#region Usings
 
+	using System.Threading.Tasks;
+
 	using MasDen.RichFileManager.DotNetConnector.Entities;
 	using MasDen.RichFileManager.DotNetConnector.Entities.Configuration;
 	using MasDen.RichFileManager.DotNetConnector.Entities.Enumerations;
+
+	using Microsoft.AspNetCore.Http;
 
 	using Microsoft.Extensions.Options;
 
@@ -48,10 +52,10 @@ namespace MasDen.RichFileManager.DotNetConnector.Components.Commands
 		#region CommandBase Members
 
 		/// <summary>
-		/// Executes this instance.
+		/// Executes the specified response.
 		/// </summary>
-		/// <returns>The result of command.</returns>
-		public override string Execute()
+		/// <param name="response">The HTTP response.</param>
+		public override async Task Execute(HttpResponse response)
 		{
 			var attributes = new InitiateCommandAttributes();
 			attributes.Config.Options = this.configuration.Value.Options;
@@ -60,7 +64,7 @@ namespace MasDen.RichFileManager.DotNetConnector.Components.Commands
 
 			var result = new CommandResult("/", ItemType.Initiate, attributes);
 
-			return this.SerializeToJson(result);
+			await response.WriteAsync(this.SerializeToJson(result));
 		}
 
 		#endregion
