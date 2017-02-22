@@ -50,5 +50,12 @@ namespace MasDen.RichFileManager.DotNetConnector.Interfaces
 		/// <param name="path">The path.</param>
 		/// <returns>The <see cref="ItemData"/> object with all information about deleted resource.</returns>
 		ItemData Delete(string path);
+
+		/// <summary>
+		/// Gets the file.
+		/// </summary>
+		/// <param name="path">The path.</param>
+		/// <returns>The <see cref="ItemData"/> object.</returns>
+		ItemData GetFile(string path);
 	}
 }

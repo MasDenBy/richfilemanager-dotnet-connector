@@ -15,26 +15,31 @@ namespace MasDen.RichFileManager.DotNetConnector.Test.Constants
 		/// <summary>
 		/// The initiate mode name
 		/// </summary>
-		public static string Initiate = "initiate";
+		public const string Initiate = "initiate";
 
 		/// <summary>
 		/// The get folder
 		/// </summary>
-		public static string GetFolder = "getfolder";
+		public const string GetFolder = "getfolder";
 
 		/// <summary>
 		/// The get image mode name
 		/// </summary>
-		public static string GetImage = "getimage";
+		public const string GetImage = "getimage";
 
 		/// <summary>
 		/// The add folder mode name.
 		/// </summary>
-		public static string AddFolder = "addfolder";
+		public const string AddFolder = "addfolder";
 
 		/// <summary>
 		/// The delete mode name.
 		/// </summary>
-		public static string Delete = "delete";
+		public const string Delete = "delete";
+
+		/// <summary>
+		/// The get file mode name.
+		/// </summary>
+		public const string GetFile = "getfile";
 	}
 }

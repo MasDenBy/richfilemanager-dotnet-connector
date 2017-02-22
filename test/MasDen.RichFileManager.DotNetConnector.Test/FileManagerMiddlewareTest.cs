@@ -195,6 +195,23 @@ namespace MasDen.RichFileManager.DotNetConnector.Test
 			Assert.AreEqual(folder["data"]["attributes"]["path"].Value<string>(), deletedFolder["data"]["attributes"]["path"].Value<string>());
 		}
 
+		/// <summary>
+		/// The test checks 'getfile' command.
+		/// </summary>
+		[Test]
+		public async Task Invoke_GetFile_ReturnFileInformation()
+		{
+			var fileInfo = await this.GetAsync($"{RichFileManagerConnectorUrl}?mode={ModeNames.GetFile}&path=%2Ffile4.txt");
+
+			Assert.IsNotNull(fileInfo);
+			Assert.IsNotNull(fileInfo["data"]);
+			Assert.IsNotNull(fileInfo["data"]["id"].Value<string>());
+			Assert.IsNotNull(fileInfo["data"]["type"].Value<string>());
+			Assert.AreEqual("file", fileInfo["data"]["type"].Value<string>());
+			Assert.IsNotNull(fileInfo["data"]["attributes"]);
+			FileManagerMiddlewareTest.ValidateItemDataId(fileInfo["data"]);
+		}
+
 		#endregion
 
 		#region Private Methods

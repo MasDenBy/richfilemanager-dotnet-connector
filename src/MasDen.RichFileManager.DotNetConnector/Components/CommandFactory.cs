@@ -63,6 +63,9 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 				case "delete":
 					return new DeleteCommand(context.Request.Query, context.RequestServices.GetService<IFileManager>());
 
+				case "getfile":
+					return new GetFileCommand(context.Request.Query, context.RequestServices.GetService<IFileManager>());
+
 				default:
 					throw new InvalidOperationException();
 			}
