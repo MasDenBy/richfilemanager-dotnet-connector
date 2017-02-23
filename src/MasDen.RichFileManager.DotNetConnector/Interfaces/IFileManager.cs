@@ -74,5 +74,13 @@ namespace MasDen.RichFileManager.DotNetConnector.Interfaces
 		/// <param name="newName">The new name.</param>
 		/// <returns>The <see cref="ItemData"/> object.</returns>
 		ItemData Rename(string path, string newName);
+
+		/// <summary>
+		/// Moves the specified path.
+		/// </summary>
+		/// <param name="path">The path.</param>
+		/// <param name="destination">The destination.</param>
+		/// <returns>The <see cref="ItemData"/> object.</returns>
+		ItemData Move(string path, string destination);
 	}
 }

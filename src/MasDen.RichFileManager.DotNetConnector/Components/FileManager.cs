@@ -301,6 +301,46 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 			}
 		}
 
+		/// <summary>
+		/// Moves the specified path.
+		/// </summary>
+		/// <param name="path">The path.</param>
+		/// <param name="destination">The destination.</param>
+		/// <returns>
+		/// The <see cref="ItemData" /> object.
+		/// </returns>
+		public ItemData Move(string path, string destination)
+		{
+			string fullPath = this.GetServerPath(path);
+			string destinationPath = this.GetServerPath(destination);
+
+			System.IO.FileAttributes attributes = File.GetAttributes(fullPath);
+
+			if ((attributes & System.IO.FileAttributes.Directory) == System.IO.FileAttributes.Directory)
+			{
+				DirectoryInfo oldDirectory = new DirectoryInfo(fullPath);
+				DirectoryInfo newDirecory = new DirectoryInfo(Path.Combine(destinationPath, oldDirectory.Name));
+
+				Directory.Move(fullPath, newDirecory.FullName);
+
+				return this.CreateFolderItemData(newDirecory, destination);
+			}
+			else
+			{
+				FileInfo oldFile = new FileInfo(fullPath);
+				FileInfo newFile = new FileInfo(Path.Combine(destinationPath, oldFile.Name));
+
+				if(!Directory.Exists(destinationPath))
+				{
+					Directory.CreateDirectory(destinationPath);
+				}
+
+				File.Move(fullPath, newFile.FullName);
+
+				return this.CreateFileItemData(newFile, destination);
+			}
+		}
+
 		#endregion
 
 		#region Private Fields
