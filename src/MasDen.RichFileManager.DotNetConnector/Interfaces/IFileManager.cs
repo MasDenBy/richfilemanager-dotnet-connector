@@ -12,6 +12,7 @@ namespace MasDen.RichFileManager.DotNetConnector.Interfaces
 	using System.Collections.Generic;
 
 	using MasDen.RichFileManager.DotNetConnector.Entities;
+	using Microsoft.AspNetCore.Http;
 
 	#endregion
 
@@ -57,5 +58,13 @@ namespace MasDen.RichFileManager.DotNetConnector.Interfaces
 		/// <param name="path">The path.</param>
 		/// <returns>The <see cref="ItemData"/> object.</returns>
 		ItemData GetFile(string path);
+
+		/// <summary>
+		/// Uploads the specified files.
+		/// </summary>
+		/// <param name="files">The files.</param>
+		/// <param name="path">The path.</param>
+		/// <returns>The collection of <see cref="ItemData"/>.</returns>
+		ICollection<ItemData> Upload(IFormFileCollection files, string path);
 	}
 }

@@ -21,6 +21,7 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 	using MasDen.RichFileManager.DotNetConnector.Interfaces;
 
 	using Microsoft.AspNetCore.Hosting;
+	using Microsoft.AspNetCore.Http;
 	using Microsoft.AspNetCore.StaticFiles;
 	using Microsoft.Extensions.Options;
 
@@ -226,6 +227,46 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 			FileInfo fileInfo = new FileInfo(fullPath);
 
 			return this.CreateFileItemData(fileInfo, path.Replace(fileInfo.Name, string.Empty));
+		}
+
+		/// <summary>
+		/// Uploads the specified files.
+		/// </summary>
+		/// <param name="files">The files.</param>
+		/// <param name="path">The path.</param>
+		/// <returns>
+		/// The collection of <see cref="ItemData" />.
+		/// </returns>
+		public ICollection<ItemData> Upload(IFormFileCollection files, string path)
+		{
+			string uploadPath = this.GetServerPath(path);
+
+			if(!Directory.Exists(uploadPath))
+			{
+				throw new InvalidOperationException($"The file {path} does not exists.");
+			}
+
+			ICollection<ItemData> result = new List<ItemData>();
+
+			foreach (var file in files)
+			{
+				string filePath = Path.Combine(uploadPath, file.FileName);
+
+				if (File.Exists(filePath))
+				{
+					throw new InvalidOperationException($"File {file.FileName} exists in folder {path}");
+				}
+
+				using (FileStream fs = File.Create(filePath))
+				{
+					file.CopyTo(fs);
+					fs.Flush();
+				}
+
+				result.Add(this.GetFile(path + file.FileName));
+			}
+
+			return result;
 		}
 
 		#endregion

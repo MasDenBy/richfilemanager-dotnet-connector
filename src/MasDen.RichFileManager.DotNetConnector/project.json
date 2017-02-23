@@ -1,5 +1,5 @@
 {
-  "version": "0.0.10-*",
+  "version": "0.0.11-*",
 
     "dependencies": {
         "CoreCompat.System.Drawing": "1.0.0-beta006",

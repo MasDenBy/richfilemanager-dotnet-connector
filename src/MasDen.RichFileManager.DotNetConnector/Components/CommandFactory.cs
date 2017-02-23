@@ -44,7 +44,16 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 		/// <returns>The <see cref="CommandBase"/> object.</returns>
 		public static CommandBase CreateCommand(HttpContext context)
 		{
-			var mode = context.Request.Query[ModeQueryKey];
+			string mode = string.Empty;
+
+			if(context.Request.Method == "POST")
+			{
+				mode = context.Request?.Form?[ModeQueryKey];
+			}
+			else
+			{
+				mode = context.Request.Query[ModeQueryKey];
+			}
 
 			switch (mode)
 			{
@@ -65,6 +74,9 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 
 				case "getfile":
 					return new GetFileCommand(context.Request.Query, context.RequestServices.GetService<IFileManager>());
+
+				case "upload":
+					return new UploadCommand(context.Request, context.RequestServices.GetService<IFileManager>());
 
 				default:
 					throw new InvalidOperationException();
