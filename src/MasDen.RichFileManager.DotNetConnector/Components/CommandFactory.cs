@@ -78,6 +78,9 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 				case "upload":
 					return new UploadCommand(context.Request, context.RequestServices.GetService<IFileManager>());
 
+				case "rename":
+					return new RenameCommand(context.Request.Query, context.RequestServices.GetService<IFileManager>());
+
 				default:
 					throw new InvalidOperationException();
 			}

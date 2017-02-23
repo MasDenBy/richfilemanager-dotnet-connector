@@ -66,5 +66,13 @@ namespace MasDen.RichFileManager.DotNetConnector.Interfaces
 		/// <param name="path">The path.</param>
 		/// <returns>The collection of <see cref="ItemData"/>.</returns>
 		ICollection<ItemData> Upload(IFormFileCollection files, string path);
+
+		/// <summary>
+		/// Renames an existed file or folder.
+		/// </summary>
+		/// <param name="path">The path to file or folder.</param>
+		/// <param name="newName">The new name.</param>
+		/// <returns>The <see cref="ItemData"/> object.</returns>
+		ItemData Rename(string path, string newName);
 	}
 }

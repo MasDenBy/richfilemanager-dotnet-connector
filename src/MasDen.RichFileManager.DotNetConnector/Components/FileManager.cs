@@ -269,6 +269,38 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 			return result;
 		}
 
+		/// <summary>
+		/// Renames the specified path.
+		/// </summary>
+		/// <param name="path">The path.</param>
+		/// <param name="newName">The new name.</param>
+		/// <returns>Information about new file or folder.</returns>
+		public ItemData Rename(string path, string newName)
+		{
+			string fullPath = this.GetServerPath(path);
+
+			System.IO.FileAttributes attributes = File.GetAttributes(fullPath);
+
+			if ((attributes & System.IO.FileAttributes.Directory) == System.IO.FileAttributes.Directory)
+			{
+				DirectoryInfo oldDirectory = new DirectoryInfo(fullPath);
+				DirectoryInfo newDirecory = new DirectoryInfo(Path.Combine(oldDirectory.Parent.FullName, newName));
+
+				Directory.Move(fullPath, newDirecory.FullName);
+
+				return this.CreateFolderItemData(newDirecory, path.Replace(oldDirectory.Name, string.Empty));
+			}
+			else
+			{
+				FileInfo oldFile = new FileInfo(fullPath);
+				FileInfo newFile = new FileInfo(Path.Combine(oldFile.Directory.FullName, newName));
+
+				File.Move(fullPath, newFile.FullName);
+
+				return this.CreateFileItemData(newFile, path.Replace(oldFile.Name, string.Empty));
+			}
+		}
+
 		#endregion
 
 		#region Private Fields
