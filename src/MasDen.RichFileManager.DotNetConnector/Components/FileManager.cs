@@ -193,7 +193,6 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 			if((attributes & System.IO.FileAttributes.Directory) == System.IO.FileAttributes.Directory)
 			{
 				DirectoryInfo dirInfo = new DirectoryInfo(fullPath);
-
 				Directory.Delete(fullPath);
 
 				return this.CreateFolderItemData(dirInfo, path.Replace(dirInfo.Name, string.Empty));
@@ -202,9 +201,11 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 			{
 				FileInfo fileInfo = new FileInfo(fullPath);
 
+				var result = this.CreateFileItemData(fileInfo, path.Replace(fileInfo.Name, string.Empty));
+
 				File.Delete(fullPath);
 
-				return this.CreateFileItemData(fileInfo, path.Replace(fileInfo.Name, string.Empty));
+				return result;
 			}
 		}
 
@@ -314,6 +315,11 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 			string fullPath = this.GetServerPath(path);
 			string destinationPath = this.GetServerPath(destination);
 
+			if (!Directory.Exists(destinationPath))
+			{
+				Directory.CreateDirectory(destinationPath);
+			}
+
 			System.IO.FileAttributes attributes = File.GetAttributes(fullPath);
 
 			if ((attributes & System.IO.FileAttributes.Directory) == System.IO.FileAttributes.Directory)
@@ -330,14 +336,47 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 				FileInfo oldFile = new FileInfo(fullPath);
 				FileInfo newFile = new FileInfo(Path.Combine(destinationPath, oldFile.Name));
 
-				if(!Directory.Exists(destinationPath))
-				{
-					Directory.CreateDirectory(destinationPath);
-				}
-
 				File.Move(fullPath, newFile.FullName);
 
 				return this.CreateFileItemData(newFile, destination);
+			}
+		}
+
+		/// <summary>
+		/// Copies the specified source.
+		/// </summary>
+		/// <param name="source">The source.</param>
+		/// <param name="target">The target.</param>
+		/// <returns>The <see cref="ItemData" /> object.</returns>
+		public ItemData Copy(string source, string target)
+		{
+			string fullPath = this.GetServerPath(source);
+			string targetPath = this.GetServerPath(target);
+
+			System.IO.FileAttributes attributes = File.GetAttributes(fullPath);
+
+			if ((attributes & System.IO.FileAttributes.Directory) == System.IO.FileAttributes.Directory)
+			{
+				DirectoryInfo oldDirectory = new DirectoryInfo(fullPath);
+				DirectoryInfo newDirecory = new DirectoryInfo(Path.Combine(targetPath, oldDirectory.Name));
+
+				FileManager.CopyDirectory(oldDirectory, newDirecory);
+
+				return this.CreateFolderItemData(newDirecory, target);
+			}
+			else
+			{
+				FileInfo oldFile = new FileInfo(fullPath);
+				FileInfo newFile = new FileInfo(Path.Combine(targetPath, oldFile.Name));
+
+				if (!Directory.Exists(targetPath))
+				{
+					Directory.CreateDirectory(targetPath);
+				}
+
+				File.Copy(fullPath, newFile.FullName);
+
+				return this.CreateFileItemData(newFile, target);
 			}
 		}
 
@@ -407,6 +446,26 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 			new FileExtensionContentTypeProvider().TryGetContentType(fileName, out contentType);
 
 			return contentType ?? "application/octet-stream";
+		}
+
+		/// <summary>
+		/// Copies the directory.
+		/// </summary>
+		/// <param name="source">The source.</param>
+		/// <param name="target">The target.</param>
+		private static void CopyDirectory(DirectoryInfo source, DirectoryInfo target)
+		{
+			Directory.CreateDirectory(target.FullName);
+
+			foreach (var file in source.GetFiles())
+			{
+				File.Copy(file.FullName, Path.Combine(target.FullName, file.Name));
+			}
+
+			foreach (var folder in source.GetDirectories())
+			{
+				FileManager.CopyDirectory(folder, new DirectoryInfo(Path.Combine(target.FullName, folder.Name)));
+			}
 		}
 
 		/// <summary>

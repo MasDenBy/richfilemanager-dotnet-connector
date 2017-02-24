@@ -82,5 +82,13 @@ namespace MasDen.RichFileManager.DotNetConnector.Interfaces
 		/// <param name="destination">The destination.</param>
 		/// <returns>The <see cref="ItemData"/> object.</returns>
 		ItemData Move(string path, string destination);
+
+		/// <summary>
+		/// Copies the specified source.
+		/// </summary>
+		/// <param name="source">The source.</param>
+		/// <param name="target">The target.</param>
+		/// <returns>The <see cref="ItemData"/> object.</returns>
+		ItemData Copy(string source, string target);
 	}
 }
