@@ -1,5 +1,14 @@
 {
-  "version": "0.0.11-*",
+    "version": "1.0.0",
+    "description": ".NET Core connector for RichFilemanager",
+    "authors": [ "Ihar Maiseyeu" ],
+    "packOptions": {
+        "tags": [ "aspnetcore", "netcore", "richfilemanager" ],
+        "repository": {
+            "type": "git",
+            "url": "https://github.com/MasDenBy/richfilemanager-dotnet-connector"
+        }
+    },
 
     "dependencies": {
         "CoreCompat.System.Drawing": "1.0.0-beta006",
