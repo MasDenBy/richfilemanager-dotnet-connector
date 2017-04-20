@@ -31,7 +31,7 @@ public IConfigurationRoot Configuration { get; }
 public void ConfigureServices(IServiceCollection services)
 {
   ...
-  services.AddRichFileManager(conf => { this.Configuration.GetSection("Filemanager"); });
+  services.AddRichFileManager(this.Configuration.GetSection("Filemanager"));
   ...
 }
 ```
