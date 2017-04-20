@@ -1,5 +1,5 @@
 {
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": ".NET Core connector for RichFilemanager",
     "authors": [ "Ihar Maiseyeu" ],
     "packOptions": {
@@ -20,7 +20,8 @@
         "Newtonsoft.Json": "9.0.1",
         "runtime.linux-x64.CoreCompat.System.Drawing": "1.0.0-beta009",
         "runtime.osx.10.10-x64.CoreCompat.System.Drawing": "1.0.1-beta004",
-        "System.Runtime.Serialization.Primitives": "4.1.1"
+        "System.Runtime.Serialization.Primitives": "4.1.1",
+        "Microsoft.Extensions.Options.ConfigurationExtensions": "1.1.0"
     },
 
   "frameworks": {

@@ -17,7 +17,7 @@ namespace MasDen.RichFileManager.DotNetConnector
 	using MasDen.RichFileManager.DotNetConnector.Interfaces;
 
 	using Microsoft.AspNetCore.Builder;
-
+	using Microsoft.Extensions.Configuration;
 	using Microsoft.Extensions.DependencyInjection;
 
 	#endregion
@@ -33,26 +33,28 @@ namespace MasDen.RichFileManager.DotNetConnector
 		/// Adds the rich file manager.
 		/// </summary>
 		/// <param name="services">The services.</param>
-		/// <param name="configurationAction">The configuration action.</param>
+		/// <param name="configuration">The configuration.</param>
 		/// <returns>
 		/// The <see cref="IServiceCollection" /> object.
 		/// </returns>
-		public static IServiceCollection AddRichFileManager(this IServiceCollection services, Action<FileManagerConfiguration> configurationAction)
+		public static IServiceCollection AddRichFileManager(this IServiceCollection services, IConfiguration configuration)
 		{
-			return services.AddRichFileManager(configurationAction, typeof(DefaultConfigurationManager));
+			return services.AddRichFileManager(configuration, typeof(DefaultConfigurationManager));
 		}
 
 		/// <summary>
 		/// Adds the rich file manager.
 		/// </summary>
 		/// <param name="services">The services.</param>
-		/// <param name="configurationAction">The configuration action.</param>
+		/// <param name="configuration">The configuration action.</param>
 		/// <param name="configurationManager">The configuration manager.</param>
-		/// <returns>The <see cref="IServiceCollection" /> object.</returns>
+		/// <returns>
+		/// The <see cref="IServiceCollection" /> object.
+		/// </returns>
 		/// <exception cref="System.ArgumentException">The configurationManager should be derived from IConfigurationManager interface</exception>
 		public static IServiceCollection AddRichFileManager(
 			this IServiceCollection services, 
-			Action<FileManagerConfiguration> configurationAction,
+			IConfiguration configuration,
 			Type configurationManager)
 		{
 			if(!typeof(IConfigurationManager).IsAssignableFrom(configurationManager))
@@ -63,7 +65,7 @@ namespace MasDen.RichFileManager.DotNetConnector
 			services.AddTransient<IFileManager, FileManager>();
 			services.AddTransient(typeof(IConfigurationManager), configurationManager);
 
-			services.Configure(configurationAction);
+			services.Configure<FileManagerConfiguration>(configuration);
 
 			return services;
 		}
