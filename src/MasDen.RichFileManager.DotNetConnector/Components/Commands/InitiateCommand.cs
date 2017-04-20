@@ -12,12 +12,10 @@ namespace MasDen.RichFileManager.DotNetConnector.Components.Commands
 	using System.Threading.Tasks;
 
 	using MasDen.RichFileManager.DotNetConnector.Entities;
-	using MasDen.RichFileManager.DotNetConnector.Entities.Configuration;
 	using MasDen.RichFileManager.DotNetConnector.Entities.Enumerations;
+	using MasDen.RichFileManager.DotNetConnector.Interfaces;
 
 	using Microsoft.AspNetCore.Http;
-
-	using Microsoft.Extensions.Options;
 
 	#endregion
 
@@ -30,9 +28,9 @@ namespace MasDen.RichFileManager.DotNetConnector.Components.Commands
 		#region Private Fields
 
 		/// <summary>
-		/// The configuration
+		/// The configuration manager
 		/// </summary>
-		private readonly IOptions<FileManagerConfiguration> configuration;
+		private readonly IConfigurationManager configurationManager;
 
 		#endregion
 
@@ -41,10 +39,10 @@ namespace MasDen.RichFileManager.DotNetConnector.Components.Commands
 		/// <summary>
 		/// Initializes a new instance of the <see cref="InitiateCommand" /> class.
 		/// </summary>
-		/// <param name="configuration">The configuration.</param>
-		public InitiateCommand(IOptions<FileManagerConfiguration> configuration)
+		/// <param name="configurationManager">The configuration manager.</param>
+		public InitiateCommand(IConfigurationManager configurationManager)
 		{
-			this.configuration = configuration;
+			this.configurationManager = configurationManager;
 		}
 
 		#endregion
@@ -57,10 +55,12 @@ namespace MasDen.RichFileManager.DotNetConnector.Components.Commands
 		/// <param name="response">The HTTP response.</param>
 		public override async Task Execute(HttpResponse response)
 		{
+			var configuration = this.configurationManager.GetConfiguration();
+
 			var attributes = new InitiateCommandAttributes();
-			attributes.Config.Options = this.configuration.Value.Options;
-			attributes.Config.Security = this.configuration.Value.Security;
-			attributes.Config.Upload = this.configuration.Value.Upload;
+			attributes.Config.Options = configuration.Options;
+			attributes.Config.Security = configuration.Security;
+			attributes.Config.Upload = configuration.Upload;
 
 			var result = new CommandResult("/", ItemType.Initiate, attributes);
 

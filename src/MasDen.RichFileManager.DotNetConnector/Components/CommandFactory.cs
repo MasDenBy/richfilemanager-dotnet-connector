@@ -12,12 +12,10 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 	using System;
 
 	using MasDen.RichFileManager.DotNetConnector.Components.Commands;
-	using MasDen.RichFileManager.DotNetConnector.Entities.Configuration;
 	using MasDen.RichFileManager.DotNetConnector.Interfaces;
 
 	using Microsoft.AspNetCore.Http;
 	using Microsoft.Extensions.DependencyInjection;
-	using Microsoft.Extensions.Options;
 
 	#endregion
 
@@ -58,7 +56,7 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 			switch (mode)
 			{
 				case "initiate":
-					return new InitiateCommand(context.RequestServices.GetService<IOptions<FileManagerConfiguration>>());
+					return new InitiateCommand(context.RequestServices.GetService<IConfigurationManager>());
 
 				case "getfolder":
 					return new GetFolderCommand(context.Request.Query, context.RequestServices.GetService<IFileManager>());

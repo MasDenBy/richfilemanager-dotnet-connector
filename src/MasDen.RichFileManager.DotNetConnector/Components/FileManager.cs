@@ -41,9 +41,9 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 		private readonly string[] imgExtensions = new string[] { ".jpg", ".png", ".jpeg", ".gif", ".bmp" };
 
 		/// <summary>
-		/// The configuration
+		/// The configuration manager
 		/// </summary>
-		private readonly IOptions<FileManagerConfiguration> configuration;
+		private readonly IConfigurationManager configurationManager;
 
 		/// <summary>
 		/// The hosting environment
@@ -57,11 +57,11 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 		/// <summary>
 		/// Initializes a new instance of the <see cref="FileManager"/> class.
 		/// </summary>
-		/// <param name="configuration">The configuration.</param>
+		/// <param name="configurationManager">The configuration.</param>
 		/// <param name="hostingEnvironment">The hosting environment.</param>
-		public FileManager(IOptions<FileManagerConfiguration> configuration, IHostingEnvironment hostingEnvironment)
+		public FileManager(IConfigurationManager configurationManager, IHostingEnvironment hostingEnvironment)
 		{
-			this.configuration = configuration;
+			this.configurationManager = configurationManager;
 			this.hostingEnvironment = hostingEnvironment;
 		}
 
@@ -532,9 +532,11 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 		/// <returns>The path without incorrect symbols</returns>
 		private string PrepareRelativePath(string path)
 		{
-			string rootFolder = !this.configuration.Value.RootPath.StartsWith("\\") 
-				? $"\\{this.configuration.Value.RootPath}" 
-				: this.configuration.Value.RootPath;
+			var configuration = this.configurationManager.GetConfiguration();
+
+			string rootFolder = !configuration.RootPath.StartsWith("\\") 
+				? $"\\{configuration.RootPath}" 
+				: configuration.RootPath;
 
 			return Path.Combine(rootFolder, FileManager.RemoveForwardSlashFromStart(path)).Replace("\\", "/");
 		}
@@ -570,7 +572,7 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 		/// <returns>The full path to root directory.</returns>
 		private string GetRootPath()
 		{
-			return Path.Combine(this.hostingEnvironment.WebRootPath, this.configuration.Value.RootPath);
+			return Path.Combine(this.hostingEnvironment.WebRootPath, this.configurationManager.GetConfiguration().RootPath);
 		}
 
 		#endregion

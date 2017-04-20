@@ -9,10 +9,15 @@ namespace MasDen.RichFileManager.DotNetConnector
 {
 	#region Usings
 
+	using System;
+	using System.Reflection;
+
 	using MasDen.RichFileManager.DotNetConnector.Components;
+	using MasDen.RichFileManager.DotNetConnector.Entities.Configuration;
 	using MasDen.RichFileManager.DotNetConnector.Interfaces;
 
 	using Microsoft.AspNetCore.Builder;
+
 	using Microsoft.Extensions.DependencyInjection;
 
 	#endregion
@@ -28,10 +33,37 @@ namespace MasDen.RichFileManager.DotNetConnector
 		/// Adds the rich file manager.
 		/// </summary>
 		/// <param name="services">The services.</param>
-		/// <returns>The <see cref="IServiceCollection"/> object.</returns>
-		public static IServiceCollection AddRichFileManager(this IServiceCollection services)
+		/// <param name="configurationAction">The configuration action.</param>
+		/// <returns>
+		/// The <see cref="IServiceCollection" /> object.
+		/// </returns>
+		public static IServiceCollection AddRichFileManager(this IServiceCollection services, Action<FileManagerConfiguration> configurationAction)
 		{
+			return services.AddRichFileManager(configurationAction, typeof(DefaultConfigurationManager));
+		}
+
+		/// <summary>
+		/// Adds the rich file manager.
+		/// </summary>
+		/// <param name="services">The services.</param>
+		/// <param name="configurationAction">The configuration action.</param>
+		/// <param name="configurationManager">The configuration manager.</param>
+		/// <returns>The <see cref="IServiceCollection" /> object.</returns>
+		/// <exception cref="System.ArgumentException">The configurationManager should be derived from IConfigurationManager interface</exception>
+		public static IServiceCollection AddRichFileManager(
+			this IServiceCollection services, 
+			Action<FileManagerConfiguration> configurationAction,
+			Type configurationManager)
+		{
+			if(!typeof(IConfigurationManager).IsAssignableFrom(configurationManager))
+			{
+				throw new ArgumentException("The configurationManager should be derived from IConfigurationManager interface");
+			}
+
 			services.AddTransient<IFileManager, FileManager>();
+			services.AddTransient(typeof(IConfigurationManager), configurationManager);
+
+			services.Configure(configurationAction);
 
 			return services;
 		}
