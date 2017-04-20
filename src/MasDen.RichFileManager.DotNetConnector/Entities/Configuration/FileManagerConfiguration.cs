@@ -30,15 +30,6 @@ namespace MasDen.RichFileManager.DotNetConnector.Entities.Configuration
 		public string RootPath { get; set; }
 
 		/// <summary>
-		/// Gets or sets the icon directory.
-		/// </summary>
-		/// <value>
-		/// The icon directory.
-		/// </value>
-		[JsonProperty("iconDirectory")]
-		public string IconDirectory { get; set; }
-
-		/// <summary>
 		/// Gets or sets the options.
 		/// </summary>
 		/// <value>
