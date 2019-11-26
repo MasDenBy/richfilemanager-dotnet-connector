@@ -5,7 +5,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace MasDen.RichFileManager.DotNetConnector.Components.Commands
+namespace MasDen.RichFileManager.DotNetConnector.Components.Actions
 {
 	#region Usings
 
@@ -24,8 +24,8 @@ namespace MasDen.RichFileManager.DotNetConnector.Components.Commands
 	/// <summary>
 	/// Represents the command to get image.
 	/// </summary>
-	/// <seealso cref="MasDen.RichFileManager.DotNetConnector.Components.Commands.CommandBase" />
-	public class GetImageCommand : CommandBase
+	/// <seealso cref="MasDen.RichFileManager.DotNetConnector.Components.Commands.ActionBase" />
+	public class GetImageCommand : ActionBase
 	{
 		#region Constants
 

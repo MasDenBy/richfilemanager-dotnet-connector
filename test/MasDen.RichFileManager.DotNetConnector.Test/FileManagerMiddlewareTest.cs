@@ -9,6 +9,7 @@ namespace MasDen.RichFileManager.DotNetConnector.Test
 {
 	#region Usings
 
+	using System.Linq;
 	using System.Threading.Tasks;
 
 	using MasDen.RichFileManager.DotNetConnector.Test.Constants;
@@ -56,44 +57,24 @@ namespace MasDen.RichFileManager.DotNetConnector.Test
 		/// The test checks that initiate command return configuration.
 		/// </summary>
 		[Test]
-		public async Task Invoke_InitiateCommand_ReturnConfiguration()
+		public async Task Invoke_InitiateQuery_ReturnConfiguration()
 		{
 			JObject result = await this.GetAsync($"{RichFileManagerConnectorUrl}?mode={ModeNames.Initiate}");
 
 			Assert.IsNotNull(result);
-			Assert.IsNotNull(result["data"]["attributes"]["config"]["options"]);
-			Assert.AreEqual("en", result["data"]["attributes"]["config"]["options"]["culture"].ToString());
-			Assert.AreEqual("flat-dark", result["data"]["attributes"]["config"]["options"]["theme"].ToString());
-			Assert.AreEqual("grid", result["data"]["attributes"]["config"]["options"]["defaultViewMode"].ToString());
-			Assert.IsTrue(result["data"]["attributes"]["config"]["options"]["localizeGUI"].Value<bool>());
-			Assert.IsTrue(result["data"]["attributes"]["config"]["options"]["showFullPath"].Value<bool>());
-			Assert.IsTrue(result["data"]["attributes"]["config"]["options"]["showTitleAttr"].Value<bool>());
-			Assert.IsTrue(result["data"]["attributes"]["config"]["options"]["showConfirmation"].Value<bool>());
-			Assert.IsTrue(result["data"]["attributes"]["config"]["options"]["browseOnly"].Value<bool>());
-			Assert.IsTrue(result["data"]["attributes"]["config"]["options"]["clipboard"].Value<bool>());
-			Assert.IsTrue(result["data"]["attributes"]["config"]["options"]["searchBox"].Value<bool>());
-			Assert.IsTrue(result["data"]["attributes"]["config"]["options"]["listFiles"].Value<bool>());
-			Assert.AreEqual("NAME_ASC", result["data"]["attributes"]["config"]["options"]["fileSorting"].ToString());
-			Assert.AreEqual("bottom", result["data"]["attributes"]["config"]["options"]["folderPosition"].ToString());
-			Assert.IsTrue(result["data"]["attributes"]["config"]["options"]["quickSelect"].Value<bool>());
-			Assert.IsTrue(result["data"]["attributes"]["config"]["options"]["charsLatinOnly"].Value<bool>());
-			Assert.AreEqual(100.0, result["data"]["attributes"]["config"]["options"]["splitterWidth"].Value<double>());
-			Assert.AreEqual(200.0, result["data"]["attributes"]["config"]["options"]["splitterMinWidth"].Value<double>());
-			Assert.IsTrue(result["data"]["attributes"]["config"]["options"]["logger"].Value<bool>());
-			Assert.AreEqual("capabilities", result["data"]["attributes"]["config"]["options"]["capabilities"].ToString());
-
-			Assert.IsTrue(result["data"]["attributes"]["config"]["security"]["allowFolderDownload"].Value<bool>());
-			Assert.IsTrue(result["data"]["attributes"]["config"]["security"]["allowChangeExtensions"].Value<bool>());
-			Assert.IsTrue(result["data"]["attributes"]["config"]["security"]["allowNoExtension"].Value<bool>());
-			Assert.IsTrue(result["data"]["attributes"]["config"]["security"]["normalizeFilename"].Value<bool>());
+			
+			Assert.IsFalse(result["data"]["attributes"]["config"]["security"]["readOnly"].Value<bool>());
+			Assert.AreEqual("ALLOW_ALL", result["data"]["attributes"]["config"]["security"]["extensions"]["policy"].ToString());
+			Assert.IsTrue(result["data"]["attributes"]["config"]["security"]["extensions"]["ignoreCase"].Value<bool>());
+			AssertCollection(
+				new[] { "jpg", "jpe", "jpeg", "gif", "png" }, 
+				result["data"]["attributes"]["config"]["security"]["extensions"]["restrictions"].Values<string>().ToArray());
 
 			Assert.IsTrue(result["data"]["attributes"]["config"]["upload"]["multiple"].Value<bool>());
 			Assert.AreEqual(3, result["data"]["attributes"]["config"]["upload"]["maxNumberOfFiles"].Value<int>());
 			Assert.AreEqual("files", result["data"]["attributes"]["config"]["upload"]["paramName"].ToString());
 			Assert.IsTrue(result["data"]["attributes"]["config"]["upload"]["chunkSize"].Value<bool>());
 			Assert.AreEqual(10, result["data"]["attributes"]["config"]["upload"]["fileSizeLimit"].Value<int>());
-			Assert.AreEqual("DISALLOW_ALL", result["data"]["attributes"]["config"]["upload"]["policy"].ToString());
-			Assert.AreEqual("restrictions", result["data"]["attributes"]["config"]["upload"]["restrictions"].ToString());
 		}
 
 		/// <summary>
@@ -227,6 +208,14 @@ namespace MasDen.RichFileManager.DotNetConnector.Test
 			if (token["type"].Value<string>().Equals("folder"))
 			{
 				Assert.IsTrue(token["id"].Value<string>().EndsWith("/"));
+			}
+		}
+
+		private static void AssertCollection(object[] expected, object[] actual)
+		{
+			for (int index = 0; index < expected.Count(); index++)
+			{
+				Assert.AreEqual(expected[index], actual[index]);
 			}
 		}
 

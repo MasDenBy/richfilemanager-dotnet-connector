@@ -1,11 +1,11 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="RenameCommand.cs" author="Ihar Maiseyeu">
+// <copyright file="GetFileCommand.cs" author="Ihar Maiseyeu">
 //     Copyright Ihar Maiseyeu. All rights reserved.
 //     Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace MasDen.RichFileManager.DotNetConnector.Components.Commands
+namespace MasDen.RichFileManager.DotNetConnector.Components.Actions
 {
 	#region Usings
 
@@ -19,10 +19,10 @@ namespace MasDen.RichFileManager.DotNetConnector.Components.Commands
 	#endregion
 
 	/// <summary>
-	/// Represents the command which renames an existed file or folder.
+	/// Represents the command which provides data for a single file.
 	/// </summary>
-	/// <seealso cref="MasDen.RichFileManager.DotNetConnector.Components.Commands.CommandBase" />
-	public class RenameCommand : CommandBase
+	/// <seealso cref="MasDen.RichFileManager.DotNetConnector.Components.Commands.ActionBase" />
+	public class GetFileCommand : ActionBase
 	{
 		#region Private Fields
 
@@ -32,29 +32,23 @@ namespace MasDen.RichFileManager.DotNetConnector.Components.Commands
 		private readonly IFileManager fileManager;
 
 		/// <summary>
-		/// The old path
+		/// The path
 		/// </summary>
-		private readonly string oldPath;
-
-		/// <summary>
-		/// The new path
-		/// </summary>
-		private readonly string newPath;
+		private readonly string path;
 
 		#endregion
 
 		#region Constructors
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="RenameCommand" /> class.
+		/// Initializes a new instance of the <see cref="GetFileCommand" /> class.
 		/// </summary>
 		/// <param name="query">The query.</param>
 		/// <param name="fileManager">The file manager.</param>
-		public RenameCommand(IQueryCollection query, IFileManager fileManager)
+		public GetFileCommand(IQueryCollection query, IFileManager fileManager)
 		{
 			this.fileManager = fileManager;
-			this.oldPath = query["old"];
-			this.newPath = query["new"];
+			this.path = query["path"];
 		}
 
 		#endregion
@@ -67,9 +61,9 @@ namespace MasDen.RichFileManager.DotNetConnector.Components.Commands
 		/// <param name="response">The HTTP response.</param>
 		public override async Task Execute(HttpResponse response)
 		{
-			var rename = this.fileManager.Rename(this.oldPath, this.newPath);
+			var fileItemData = this.fileManager.GetFile(this.path);
 
-			await response.WriteAsync(this.SerializeToJson(new CommandResult(rename)));
+			await response.WriteAsync(this.SerializeToJson(new CommandResult(fileItemData)));
 		}
 
 		#endregion

@@ -1,11 +1,11 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="GetFileCommand.cs" author="Ihar Maiseyeu">
+// <copyright file="GetFolderCommand.cs" author="Ihar Maiseyeu">
 //     Copyright Ihar Maiseyeu. All rights reserved.
 //     Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace MasDen.RichFileManager.DotNetConnector.Components.Commands
+namespace MasDen.RichFileManager.DotNetConnector.Components.Actions
 {
 	#region Usings
 
@@ -19,10 +19,10 @@ namespace MasDen.RichFileManager.DotNetConnector.Components.Commands
 	#endregion
 
 	/// <summary>
-	/// Represents the command which provides data for a single file.
+	/// Represents the command which return information about folder.
 	/// </summary>
-	/// <seealso cref="MasDen.RichFileManager.DotNetConnector.Components.Commands.CommandBase" />
-	public class GetFileCommand : CommandBase
+	/// <seealso cref="MasDen.RichFileManager.DotNetConnector.Components.Commands.ActionBase" />
+	public class GetFolderCommand : ActionBase
 	{
 		#region Private Fields
 
@@ -41,11 +41,11 @@ namespace MasDen.RichFileManager.DotNetConnector.Components.Commands
 		#region Constructors
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="GetFileCommand" /> class.
+		/// Initializes a new instance of the <see cref="GetFolderCommand" /> class.
 		/// </summary>
 		/// <param name="query">The query.</param>
 		/// <param name="fileManager">The file manager.</param>
-		public GetFileCommand(IQueryCollection query, IFileManager fileManager)
+		public GetFolderCommand(IQueryCollection query, IFileManager fileManager)
 		{
 			this.fileManager = fileManager;
 			this.path = query["path"];
@@ -61,9 +61,9 @@ namespace MasDen.RichFileManager.DotNetConnector.Components.Commands
 		/// <param name="response">The HTTP response.</param>
 		public override async Task Execute(HttpResponse response)
 		{
-			var fileItemData = this.fileManager.GetFile(this.path);
+			var result = new CommandResultCollection(this.fileManager.GetFolder(this.path));
 
-			await response.WriteAsync(this.SerializeToJson(new CommandResult(fileItemData)));
+			await response.WriteAsync(this.SerializeToJson(result));
 		}
 
 		#endregion

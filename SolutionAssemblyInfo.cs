@@ -13,6 +13,6 @@ using System.Resources;
 [assembly: AssemblyCompany("Ihar Maiseyeu")]
 [assembly: AssemblyCulture("")]
 [assembly: AssemblyTrademark("")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.1.0.0")]
+[assembly: AssemblyFileVersion("1.1.0.0")]
 [assembly: NeutralResourcesLanguageAttribute("en-US")]

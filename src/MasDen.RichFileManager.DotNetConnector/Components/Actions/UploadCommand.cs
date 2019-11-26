@@ -1,11 +1,11 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="CopyCommand.cs" author="Ihar Maiseyeu">
+// <copyright file="UploadCommand.cs" author="Ihar Maiseyeu">
 //     Copyright Ihar Maiseyeu. All rights reserved.
 //     Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace MasDen.RichFileManager.DotNetConnector.Components.Commands
+namespace MasDen.RichFileManager.DotNetConnector.Components.Actions
 {
 	#region Usings
 
@@ -19,42 +19,36 @@ namespace MasDen.RichFileManager.DotNetConnector.Components.Commands
 	#endregion
 
 	/// <summary>
-	/// Represents the command which copies file or folder to specified directory.
+	/// Represents the command which upload files to the server.
 	/// </summary>
-	/// <seealso cref="MasDen.RichFileManager.DotNetConnector.Components.Commands.CommandBase" />
-	public class CopyCommand : CommandBase
+	/// <seealso cref="MasDen.RichFileManager.DotNetConnector.Components.Actions.ActionBase" />
+	public class UploadCommand : ActionBase
 	{
 		#region Private Fields
+
+		/// <summary>
+		/// The request
+		/// </summary>
+		private readonly HttpRequest request;
 
 		/// <summary>
 		/// The file manager
 		/// </summary>
 		private readonly IFileManager fileManager;
 
-		/// <summary>
-		/// The source
-		/// </summary>
-		private readonly string source;
-
-		/// <summary>
-		/// The target
-		/// </summary>
-		private readonly string target;
-
 		#endregion
 
 		#region Constructors
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="CopyCommand" /> class.
+		/// Initializes a new instance of the <see cref="UploadCommand" /> class.
 		/// </summary>
-		/// <param name="query">The query.</param>
+		/// <param name="request">The request.</param>
 		/// <param name="fileManager">The file manager.</param>
-		public CopyCommand(IQueryCollection query, IFileManager fileManager)
+		public UploadCommand(HttpRequest request, IFileManager fileManager)
 		{
+			this.request = request;
 			this.fileManager = fileManager;
-			this.source = query["source"];
-			this.target = query["target"];
 		}
 
 		#endregion
@@ -65,11 +59,14 @@ namespace MasDen.RichFileManager.DotNetConnector.Components.Commands
 		/// Executes the specified response.
 		/// </summary>
 		/// <param name="response">The HTTP response.</param>
+		/// <returns></returns>
 		public override async Task Execute(HttpResponse response)
 		{
-			var item = this.fileManager.Copy(this.source, this.target);
+			string path = this.request.Form["path"];
 
-			await response.WriteAsync(this.SerializeToJson(new CommandResult(item)));
+			var result = this.fileManager.Upload(this.request.Form.Files, path);
+
+			await response.WriteAsync(this.SerializeToJson(new CommandResultCollection(result)));
 		}
 
 		#endregion

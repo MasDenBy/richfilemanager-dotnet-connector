@@ -14,7 +14,7 @@ namespace MasDen.RichFileManager.DotNetConnector.Entities
 	#endregion
 
 	/// <summary>
-	/// Represents the result attributes for the <see cref="MasDen.RichFileManager.DotNetConnector.Components.Commands.InitiateCommand"/>.
+	/// Represents the result attributes for the <see cref="MasDen.RichFileManager.DotNetConnector.Components.Commands.InitiateQuery"/>.
 	/// </summary>
 	/// <seealso cref="MasDen.RichFileManager.DotNetConnector.Entities.AttributesBase" />
 	public class InitiateCommandAttributes : AttributesBase

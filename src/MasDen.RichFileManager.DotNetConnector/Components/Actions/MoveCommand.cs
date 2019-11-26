@@ -1,11 +1,11 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="AddFolderCommand.cs" author="Ihar Maiseyeu">
+// <copyright file="MoveCommand.cs" author="Ihar Maiseyeu">
 //     Copyright Ihar Maiseyeu. All rights reserved.
 //     Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace MasDen.RichFileManager.DotNetConnector.Components.Commands
+namespace MasDen.RichFileManager.DotNetConnector.Components.Actions
 {
 	#region Usings
 
@@ -19,10 +19,10 @@ namespace MasDen.RichFileManager.DotNetConnector.Components.Commands
 	#endregion
 
 	/// <summary>
-	/// Represents the command which created new directory in file system.
+	/// Represents the command which renames an existed file or folder.
 	/// </summary>
-	/// <seealso cref="MasDen.RichFileManager.DotNetConnector.Components.Commands.CommandBase" />
-	public class AddFolderCommand : CommandBase
+	/// <seealso cref="MasDen.RichFileManager.DotNetConnector.Components.Commands.ActionBase" />
+	public class MoveCommand : ActionBase
 	{
 		#region Private Fields
 
@@ -32,29 +32,29 @@ namespace MasDen.RichFileManager.DotNetConnector.Components.Commands
 		private readonly IFileManager fileManager;
 
 		/// <summary>
-		/// The path
+		/// The old path
 		/// </summary>
-		private readonly string path;
+		private readonly string oldPath;
 
 		/// <summary>
-		/// The name
+		/// The new path
 		/// </summary>
-		private readonly string name;
+		private readonly string newPath;
 
 		#endregion
 
 		#region Constructors
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="AddFolderCommand" /> class.
+		/// Initializes a new instance of the <see cref="MoveCommand" /> class.
 		/// </summary>
 		/// <param name="query">The query.</param>
 		/// <param name="fileManager">The file manager.</param>
-		public AddFolderCommand(IQueryCollection query, IFileManager fileManager)
+		public MoveCommand(IQueryCollection query, IFileManager fileManager)
 		{
 			this.fileManager = fileManager;
-			this.path = query["path"];
-			this.name = query["name"];
+			this.oldPath = query["old"];
+			this.newPath = query["new"];
 		}
 
 		#endregion
@@ -67,9 +67,9 @@ namespace MasDen.RichFileManager.DotNetConnector.Components.Commands
 		/// <param name="response">The HTTP response.</param>
 		public override async Task Execute(HttpResponse response)
 		{
-			var folderItemData = this.fileManager.CreateDirectory(this.path, this.name);
+			var rename = this.fileManager.Move(this.oldPath, this.newPath);
 
-			await response.WriteAsync(this.SerializeToJson(new CommandResult(folderItemData)));
+			await response.WriteAsync(this.SerializeToJson(new CommandResult(rename)));
 		}
 
 		#endregion

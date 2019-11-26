@@ -23,15 +23,6 @@ namespace MasDen.RichFileManager.DotNetConnector.Entities
 		#region Public Properties
 
 		/// <summary>
-		/// Gets or sets the options.
-		/// </summary>
-		/// <value>
-		/// The options.
-		/// </value>
-		[JsonProperty("options")]
-		public OptionsSection Options { get; set; }
-
-		/// <summary>
 		/// Gets or sets the security.
 		/// </summary>
 		/// <value>

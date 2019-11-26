@@ -1,11 +1,11 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="InitiateCommand.cs" author="Ihar Maiseyeu">
+// <copyright file="InitiateQuery.cs" author="Ihar Maiseyeu">
 //     Copyright Ihar Maiseyeu. All rights reserved.
 //     Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace MasDen.RichFileManager.DotNetConnector.Components.Commands
+namespace MasDen.RichFileManager.DotNetConnector.Components.Actions
 {
 	#region Usings
 
@@ -20,10 +20,10 @@ namespace MasDen.RichFileManager.DotNetConnector.Components.Commands
 	#endregion
 
 	/// <summary>
-	/// Represents the "initiate" command.
+	/// Represents the "initiate" query.
 	/// </summary>
-	/// <seealso cref="MasDen.RichFileManager.DotNetConnector.Components.Commands.CommandBase" />
-	public class InitiateCommand : CommandBase
+	/// <seealso cref="MasDen.RichFileManager.DotNetConnector.Components.Commands.ActionBase" />
+	public class InitiateQuery : ActionBase
 	{
 		#region Private Fields
 
@@ -37,10 +37,10 @@ namespace MasDen.RichFileManager.DotNetConnector.Components.Commands
 		#region Constructors
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="InitiateCommand" /> class.
+		/// Initializes a new instance of the <see cref="InitiateQuery" /> class.
 		/// </summary>
 		/// <param name="configurationManager">The configuration manager.</param>
-		public InitiateCommand(IConfigurationManager configurationManager)
+		public InitiateQuery(IConfigurationManager configurationManager)
 		{
 			this.configurationManager = configurationManager;
 		}
@@ -58,7 +58,6 @@ namespace MasDen.RichFileManager.DotNetConnector.Components.Commands
 			var configuration = this.configurationManager.GetConfiguration();
 
 			var attributes = new InitiateCommandAttributes();
-			attributes.Config.Options = configuration.Options;
 			attributes.Config.Security = configuration.Security;
 			attributes.Config.Upload = configuration.Upload;
 

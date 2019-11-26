@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="SecuritySection.cs" author="Ihar Maiseyeu">
+// <copyright file="SecurityConfigurationExtensions.cs" author="Ihar Maiseyeu">
 //     Copyright Ihar Maiseyeu. All rights reserved.
 //     Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 // </copyright>
@@ -7,16 +7,24 @@
 
 namespace MasDen.RichFileManager.DotNetConnector.Entities.Configuration
 {
+	#region Usings
+
+	using System.Collections.Generic;
+
+	#endregion
+
 	/// <summary>
-	/// Represents the configuration options from security section.
+	/// The security configuration extensions class.
 	/// </summary>
-	public class SecuritySection
+	public class SecurityConfigurationExtensions
 	{
 		#region Public Properties
 
-		public bool ReadOnly { get; set; }
+		public string Policy { get; set; } = "ALLOW_LIST";
 
-		public SecurityConfigurationExtensions Extensions { get; set; }
+		public bool IgnoreCase { get; set; }
+
+		public ICollection<string> Restrictions { get; set; }
 
 		#endregion
 	}

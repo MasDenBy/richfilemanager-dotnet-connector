@@ -7,12 +7,6 @@
 
 namespace MasDen.RichFileManager.DotNetConnector.Entities.Configuration
 {
-	#region Usings
-
-	using Newtonsoft.Json;
-
-	#endregion
-
 	/// <summary>
 	/// Represents the configuration items for upload section.
 	/// </summary>
@@ -26,7 +20,6 @@ namespace MasDen.RichFileManager.DotNetConnector.Entities.Configuration
 		/// <value>
 		/// The multiple.
 		/// </value>
-		[JsonProperty("multiple")]
 		public bool? Multiple { get; set; }
 
 		/// <summary>
@@ -35,7 +28,6 @@ namespace MasDen.RichFileManager.DotNetConnector.Entities.Configuration
 		/// <value>
 		/// The maximum number of files.
 		/// </value>
-		[JsonProperty("maxNumberOfFiles")]
 		public int? MaxNumberOfFiles { get; set; }
 
 		/// <summary>
@@ -44,7 +36,6 @@ namespace MasDen.RichFileManager.DotNetConnector.Entities.Configuration
 		/// <value>
 		/// The name of the parameter.
 		/// </value>
-		[JsonProperty("paramName")]
 		public string ParamName { get; set; }
 
 		/// <summary>
@@ -53,7 +44,6 @@ namespace MasDen.RichFileManager.DotNetConnector.Entities.Configuration
 		/// <value>
 		/// The size of the chunk.
 		/// </value>
-		[JsonProperty("chunkSize")]
 		public bool? ChunkSize { get; set; }
 
 		/// <summary>
@@ -62,26 +52,7 @@ namespace MasDen.RichFileManager.DotNetConnector.Entities.Configuration
 		/// <value>
 		/// The file size limit.
 		/// </value>
-		[JsonProperty("fileSizeLimit")]
 		public int? FileSizeLimit { get; set; }
-
-		/// <summary>
-		/// Gets or sets the policy.
-		/// </summary>
-		/// <value>
-		/// The policy.
-		/// </value>
-		[JsonProperty("policy")]
-		public string Policy { get; set; }
-
-		/// <summary>
-		/// Gets or sets the restrictions.
-		/// </summary>
-		/// <value>
-		/// The restrictions.
-		/// </value>
-		[JsonProperty("restrictions")]
-		public string Restrictions { get; set; }
 
 		#endregion
 	}

@@ -30,15 +30,6 @@ namespace MasDen.RichFileManager.DotNetConnector.Entities.Configuration
 		public string RootPath { get; set; }
 
 		/// <summary>
-		/// Gets or sets the options.
-		/// </summary>
-		/// <value>
-		/// The options.
-		/// </value>
-		[JsonProperty("options")]
-		public OptionsSection Options { get; set; }
-
-		/// <summary>
 		/// Gets or sets the security.
 		/// </summary>
 		/// <value>

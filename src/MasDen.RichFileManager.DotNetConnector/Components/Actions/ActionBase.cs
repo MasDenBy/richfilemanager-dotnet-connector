@@ -1,11 +1,11 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="CommandBase.cs" author="Ihar Maiseyeu">
+// <copyright file="ActionBase.cs" author="Ihar Maiseyeu">
 //     Copyright Ihar Maiseyeu. All rights reserved.
 //     Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace MasDen.RichFileManager.DotNetConnector.Components.Commands
+namespace MasDen.RichFileManager.DotNetConnector.Components.Actions
 {
 	#region Usings
 
@@ -14,13 +14,14 @@ namespace MasDen.RichFileManager.DotNetConnector.Components.Commands
 	using Microsoft.AspNetCore.Http;
 
 	using Newtonsoft.Json;
+	using Newtonsoft.Json.Serialization;
 
 	#endregion
 
 	/// <summary>
-	/// Represents the base class to the command.
+	/// Represents the base class to the action.
 	/// </summary>
-	public abstract class CommandBase
+	public abstract class ActionBase
 	{
 		#region Public Methods
 
@@ -45,7 +46,11 @@ namespace MasDen.RichFileManager.DotNetConnector.Components.Commands
 		{
 			JsonSerializerSettings jsonSerializerOptions = new JsonSerializerSettings
 			{
-				NullValueHandling = NullValueHandling.Ignore
+				NullValueHandling = NullValueHandling.Ignore,
+				ContractResolver = new DefaultContractResolver
+				{
+					NamingStrategy = new CamelCaseNamingStrategy()
+				}
 			};
 
 			return JsonConvert.SerializeObject(value, jsonSerializerOptions);
