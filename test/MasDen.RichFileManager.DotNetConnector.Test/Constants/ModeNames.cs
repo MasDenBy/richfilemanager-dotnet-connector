@@ -38,8 +38,8 @@ namespace MasDen.RichFileManager.DotNetConnector.Test.Constants
 		public const string Delete = "delete";
 
 		/// <summary>
-		/// The get file mode name.
+		/// The read file mode name.
 		/// </summary>
-		public const string GetFile = "getfile";
+		public const string ReadFile = "readfile";
 	}
 }

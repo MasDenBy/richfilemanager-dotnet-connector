@@ -53,13 +53,6 @@ namespace MasDen.RichFileManager.DotNetConnector.Interfaces
 		ItemData Delete(string path);
 
 		/// <summary>
-		/// Gets the file.
-		/// </summary>
-		/// <param name="path">The path.</param>
-		/// <returns>The <see cref="ItemData"/> object.</returns>
-		ItemData GetFile(string path);
-
-		/// <summary>
 		/// Uploads the specified files.
 		/// </summary>
 		/// <param name="files">The files.</param>
@@ -90,5 +83,7 @@ namespace MasDen.RichFileManager.DotNetConnector.Interfaces
 		/// <param name="target">The target.</param>
 		/// <returns>The <see cref="ItemData"/> object.</returns>
 		ItemData Copy(string source, string target);
+
+		byte[] ReadFile(string path);
 	}
 }

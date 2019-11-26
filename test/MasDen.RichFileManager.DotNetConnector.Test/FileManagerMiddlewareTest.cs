@@ -7,6 +7,7 @@
 
 namespace MasDen.RichFileManager.DotNetConnector.Test
 {
+	using System.IO;
 	#region Usings
 
 	using System.Linq;
@@ -177,30 +178,25 @@ namespace MasDen.RichFileManager.DotNetConnector.Test
 		}
 
 		/// <summary>
-		/// The test checks 'getfile' command.
+		/// The test checks 'readfile' command.
 		/// </summary>
 		[Test]
-		public async Task Invoke_GetFile_ReturnFileInformation()
+		public async Task Invoke_ReadFile_ReturnFileContent()
 		{
-			var fileInfo = await this.GetAsync($"{RichFileManagerConnectorUrl}?mode={ModeNames.GetFile}&path=%2Ffile4.txt");
+			// Arrange
+			var expected = File.ReadAllText("wwwroot/TestData/file4.txt");
 
-			Assert.IsNotNull(fileInfo);
-			Assert.IsNotNull(fileInfo["data"]);
-			Assert.IsNotNull(fileInfo["data"]["id"].Value<string>());
-			Assert.IsNotNull(fileInfo["data"]["type"].Value<string>());
-			Assert.AreEqual("file", fileInfo["data"]["type"].Value<string>());
-			Assert.IsNotNull(fileInfo["data"]["attributes"]);
-			FileManagerMiddlewareTest.ValidateItemDataId(fileInfo["data"]);
+			// Act
+			var fileData = await this.GetContentAsync($"{RichFileManagerConnectorUrl}?mode={ModeNames.ReadFile}&path=%2Ffile4.txt");
+
+			// Assert
+			Assert.AreEqual(expected, fileData);
 		}
 
 		#endregion
 
 		#region Private Methods
 
-		/// <summary>
-		/// Validates the item data identifier.
-		/// </summary>
-		/// <param name="token">The token.</param>
 		private static void ValidateItemDataId(JToken token)
 		{
 			Assert.IsTrue(token["id"].Value<string>().StartsWith("/"));
@@ -219,19 +215,21 @@ namespace MasDen.RichFileManager.DotNetConnector.Test
 			}
 		}
 
-		/// <summary>
-		/// Gets the asynchronous.
-		/// </summary>
-		/// <param name="requestUri">The request URI.</param>
-		/// <returns>The response data</returns>
 		private async Task<JObject> GetAsync(string requestUri)
+		{
+			var content = await this.GetContentAsync(requestUri);
+
+			return JsonConvert.DeserializeObject<JObject>(content);
+		}
+
+		private async Task<string> GetContentAsync(string requestUri)
 		{
 			var response = await this.Client.GetAsync(requestUri);
 
 			Assert.IsTrue(response.IsSuccessStatusCode);
 			var content = await response.Content.ReadAsStringAsync();
 
-			return JsonConvert.DeserializeObject<JObject>(content);
+			return content;
 		}
 
 		#endregion

@@ -187,27 +187,6 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 		}
 
 		/// <summary>
-		/// Gets the file.
-		/// </summary>
-		/// <param name="path">The path.</param>
-		/// <returns>
-		/// The <see cref="ItemData" /> object.
-		/// </returns>
-		public ItemData GetFile(string path)
-		{
-			string fullPath = this.GetServerPath(path);
-
-			if (!File.Exists(fullPath))
-			{
-				throw new InvalidOperationException($"The file {path} does not exists.");
-			}
-
-			FileInfo fileInfo = new FileInfo(fullPath);
-
-			return this.CreateFileItemData(fileInfo, path.Replace(fileInfo.Name, string.Empty));
-		}
-
-		/// <summary>
 		/// Uploads the specified files.
 		/// </summary>
 		/// <param name="files">The files.</param>
@@ -355,6 +334,18 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 
 				return this.CreateFileItemData(newFile, target);
 			}
+		}
+
+		public byte[] ReadFile(string path)
+		{
+			string fullPath = this.GetServerPath(path);
+
+			if (!File.Exists(fullPath))
+			{
+				throw new InvalidOperationException($"The file {path} does not exists.");
+			}
+
+			return File.ReadAllBytes(fullPath);
 		}
 
 		#endregion
@@ -554,6 +545,20 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 			}
 
 			return attributes;
+		}
+
+		public ItemData GetFile(string path)
+		{
+			string fullPath = this.GetServerPath(path);
+
+			if (!File.Exists(fullPath))
+			{
+				throw new InvalidOperationException($"The file {path} does not exists.");
+			}
+
+			FileInfo fileInfo = new FileInfo(fullPath);
+
+			return this.CreateFileItemData(fileInfo, path.Replace(fileInfo.Name, string.Empty));
 		}
 
 		#endregion

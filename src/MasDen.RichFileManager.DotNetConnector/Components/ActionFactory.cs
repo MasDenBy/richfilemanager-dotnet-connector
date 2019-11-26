@@ -72,8 +72,8 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 				case "delete":
 					return new DeleteCommand(context.Request.Query, fileManager);
 
-				case "getfile":
-					return new GetFileCommand(context.Request.Query, fileManager);
+				case "readfile":
+					return new ReadFileQuery(context.Request.Query, fileManager);
 
 				case "upload":
 					return new UploadCommand(context.Request, fileManager);
