@@ -16,14 +16,11 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 	using System.Linq;
 
 	using MasDen.RichFileManager.DotNetConnector.Entities;
-	using MasDen.RichFileManager.DotNetConnector.Entities.Configuration;
-	using MasDen.RichFileManager.DotNetConnector.Entities.Enumerations;
 	using MasDen.RichFileManager.DotNetConnector.Interfaces;
 
 	using Microsoft.AspNetCore.Hosting;
 	using Microsoft.AspNetCore.Http;
 	using Microsoft.AspNetCore.StaticFiles;
-	using Microsoft.Extensions.Options;
 
 	#endregion
 
@@ -99,27 +96,7 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 			{
 				string filePath = this.PrepareRelativePath(Path.Combine(path, file.Name));
 
-				Entities.FileAttributes attributes = new Entities.FileAttributes()
-				{
-					Created = file.CreationTime,
-					Modified = file.LastWriteTime,
-					Name = file.Name,
-					Extension = file.Extension.Replace(".", string.Empty),
-					Path = this.PrepareRelativePath(Path.Combine(path, file.Name)),
-					Readable = true,
-					TimeStamp = FileManager.GetTimeStamp(file.CreationTime),
-					Writable = true,
-					Size = file.Length
-				};
-
-				if(this.IsImage(file))
-				{
-					using (Image img = Image.FromFile(file.FullName))
-					{
-						attributes.Height = img.Height;
-						attributes.Width = img.Width;
-					}
-				}
+				var attributes = CreateFileAttribute(file, path);
 
 				result.Add(new FileItemData(FileManager.GetItemIdentifier(path, file.Name), attributes));
 			}
@@ -483,7 +460,6 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 				Name = dir.Name,
 				Path = this.PrepareRelativePath(Path.Combine(path, dir.Name)),
 				Readable = true,
-				TimeStamp = FileManager.GetTimeStamp(dir.CreationTime),
 				Writable = true
 			};
 
@@ -500,27 +476,7 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 		{
 			string filePath = this.PrepareRelativePath(Path.Combine(path, file.Name));
 
-			Entities.FileAttributes attributes = new Entities.FileAttributes()
-			{
-				Created = file.CreationTime,
-				Modified = file.LastWriteTime,
-				Name = file.Name,
-				Extension = file.Extension.Replace(".", string.Empty),
-				Path = this.PrepareRelativePath(Path.Combine(path, file.Name)),
-				Readable = true,
-				TimeStamp = FileManager.GetTimeStamp(file.CreationTime),
-				Writable = true,
-				Size = file.Length
-			};
-
-			if (this.IsImage(file))
-			{
-				using (Image img = Image.FromFile(file.FullName))
-				{
-					attributes.Height = img.Height;
-					attributes.Width = img.Width;
-				}
-			}
+			Entities.FileAttributes attributes = CreateFileAttribute(file, path);
 
 			return new FileItemData(FileManager.GetItemIdentifier(path, file.Name), attributes);
 		}
@@ -573,6 +529,31 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 		private string GetRootPath()
 		{
 			return Path.Combine(this.hostingEnvironment.WebRootPath, this.configurationManager.GetConfiguration().RootPath);
+		}
+
+		private Entities.FileAttributes CreateFileAttribute(FileInfo file, string path)
+		{
+			Entities.FileAttributes attributes = new Entities.FileAttributes()
+			{
+				Created = file.CreationTime,
+				Modified = file.LastWriteTime,
+				Name = file.Name,
+				Path = this.PrepareRelativePath(Path.Combine(path, file.Name)),
+				Readable = true,
+				Writable = true,
+				Size = file.Length
+			};
+
+			if (this.IsImage(file))
+			{
+				using (Image img = Image.FromFile(file.FullName))
+				{
+					attributes.Height = img.Height;
+					attributes.Width = img.Width;
+				}
+			}
+
+			return attributes;
 		}
 
 		#endregion

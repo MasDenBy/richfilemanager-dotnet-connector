@@ -81,15 +81,6 @@ namespace MasDen.RichFileManager.DotNetConnector.Entities
 		[JsonProperty("modified")]
 		public DateTime Modified { get; set; }
 
-		/// <summary>
-		/// Gets or sets the time stamp.
-		/// </summary>
-		/// <value>
-		/// The time stamp.
-		/// </value>
-		[JsonProperty("timestamp")]
-		public int TimeStamp { get; set; }
-
 		#endregion
 	}
 }

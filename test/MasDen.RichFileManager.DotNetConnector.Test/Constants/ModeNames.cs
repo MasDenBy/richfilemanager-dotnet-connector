@@ -18,9 +18,9 @@ namespace MasDen.RichFileManager.DotNetConnector.Test.Constants
 		public const string Initiate = "initiate";
 
 		/// <summary>
-		/// The get folder
+		/// The read folder
 		/// </summary>
-		public const string GetFolder = "getfolder";
+		public const string ReadFolder = "readfolder";
 
 		/// <summary>
 		/// The get image mode name

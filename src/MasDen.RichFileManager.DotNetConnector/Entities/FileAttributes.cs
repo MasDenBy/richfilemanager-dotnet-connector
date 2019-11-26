@@ -35,15 +35,6 @@ namespace MasDen.RichFileManager.DotNetConnector.Entities
 		public string Name { get; set; }
 
 		/// <summary>
-		/// Gets or sets the extension.
-		/// </summary>
-		/// <value>
-		/// The extension.
-		/// </value>
-		[JsonProperty("extension")]
-		public string Extension { get; set; }
-
-		/// <summary>
 		/// Gets or sets the path.
 		/// </summary>
 		/// <value>
@@ -89,15 +80,6 @@ namespace MasDen.RichFileManager.DotNetConnector.Entities
 		/// </value>
 		[JsonProperty("modified")]
 		public DateTime Modified { get; set; }
-
-		/// <summary>
-		/// Gets or sets the time stamp.
-		/// </summary>
-		/// <value>
-		/// The time stamp.
-		/// </value>
-		[JsonProperty("timestamp")]
-		public int TimeStamp { get; set; }
 
 		/// <summary>
 		/// Gets or sets the height.

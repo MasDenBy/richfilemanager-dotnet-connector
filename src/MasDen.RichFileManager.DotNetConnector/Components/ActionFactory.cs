@@ -60,8 +60,8 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 				case "initiate":
 					return new InitiateQuery(context.RequestServices.GetService<IConfigurationManager>());
 
-				case "getfolder":
-					return new GetFolderCommand(context.Request.Query, fileManager);
+				case "readfolder":
+					return new ReadFolderQuery(context.Request.Query, fileManager);
 
 				case "getimage":
 					return new GetImageCommand(context.Request.Query, fileManager);

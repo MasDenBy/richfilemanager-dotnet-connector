@@ -84,7 +84,7 @@ namespace MasDen.RichFileManager.DotNetConnector.Test
 		[Test]
 		public async Task Invoke_GetFolder_ReturnsRootDirectory()
 		{
-			JObject result = await this.GetAsync($"{RichFileManagerConnectorUrl}?mode={ModeNames.GetFolder}&path=%2F");
+			JObject result = await this.GetAsync($"{RichFileManagerConnectorUrl}?mode={ModeNames.ReadFolder}&path=%2F");
 
 			Assert.IsNotNull(result);
 			Assert.IsNotNull(result["data"]);
@@ -106,7 +106,7 @@ namespace MasDen.RichFileManager.DotNetConnector.Test
 		[Test]
 		public async Task Invoke_GetFolder_ReturnsErrorIfPathDoesNotExists()
 		{
-			JObject result = await this.GetAsync($"{RichFileManagerConnectorUrl}?mode={ModeNames.GetFolder}&path=%2Fnotexistspath");
+			JObject result = await this.GetAsync($"{RichFileManagerConnectorUrl}?mode={ModeNames.ReadFolder}&path=%2Fnotexistspath");
 
 			Assert.IsNotNull(result);
 			Assert.IsNotNull(result["errors"]);
@@ -119,9 +119,9 @@ namespace MasDen.RichFileManager.DotNetConnector.Test
 		/// The test checks that 'getfolder' command return the content of folder inside root directory.
 		/// </summary>
 		[Test]
-		public async Task Invoke_GetFolder_ReturnsContentOfDirectoryInsideRoot()
+		public async Task Invoke_ReadFolder_ReturnsContentOfDirectoryInsideRoot()
 		{
-			JObject result = await this.GetAsync($"{RichFileManagerConnectorUrl}?mode={ModeNames.GetFolder}&path=%2FFolder1");
+			JObject result = await this.GetAsync($"{RichFileManagerConnectorUrl}?mode={ModeNames.ReadFolder}&path=%2FFolder1");
 
 			Assert.IsNotNull(result);
 			Assert.IsNotNull(result["data"]);

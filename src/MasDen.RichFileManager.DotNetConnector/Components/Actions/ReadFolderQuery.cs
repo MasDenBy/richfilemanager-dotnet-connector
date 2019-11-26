@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="GetFolderCommand.cs" author="Ihar Maiseyeu">
+// <copyright file="ReadFolderQuery.cs" author="Ihar Maiseyeu">
 //     Copyright Ihar Maiseyeu. All rights reserved.
 //     Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 // </copyright>
@@ -19,10 +19,10 @@ namespace MasDen.RichFileManager.DotNetConnector.Components.Actions
 	#endregion
 
 	/// <summary>
-	/// Represents the command which return information about folder.
+	/// Represents the query which return information about folder.
 	/// </summary>
-	/// <seealso cref="MasDen.RichFileManager.DotNetConnector.Components.Commands.ActionBase" />
-	public class GetFolderCommand : ActionBase
+	/// <seealso cref="MasDen.RichFileManager.DotNetConnector.Components.Actions.ActionBase" />
+	public class ReadFolderQuery : ActionBase
 	{
 		#region Private Fields
 
@@ -41,11 +41,11 @@ namespace MasDen.RichFileManager.DotNetConnector.Components.Actions
 		#region Constructors
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="GetFolderCommand" /> class.
+		/// Initializes a new instance of the <see cref="ReadFolderQuery" /> class.
 		/// </summary>
 		/// <param name="query">The query.</param>
 		/// <param name="fileManager">The file manager.</param>
-		public GetFolderCommand(IQueryCollection query, IFileManager fileManager)
+		public ReadFolderQuery(IQueryCollection query, IFileManager fileManager)
 		{
 			this.fileManager = fileManager;
 			this.path = query["path"];
@@ -53,7 +53,7 @@ namespace MasDen.RichFileManager.DotNetConnector.Components.Actions
 
 		#endregion
 
-		#region CommandBase Members
+		#region ActionBase Members
 
 		/// <summary>
 		/// Executes the specified response.
