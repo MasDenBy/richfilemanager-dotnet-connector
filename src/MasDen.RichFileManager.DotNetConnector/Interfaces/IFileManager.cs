@@ -85,5 +85,7 @@ namespace MasDen.RichFileManager.DotNetConnector.Interfaces
 		ItemData Copy(string source, string target);
 
 		byte[] ReadFile(string path);
+
+		ItemData SaveFile(string path, string content);
 	}
 }

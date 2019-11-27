@@ -12,6 +12,7 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 	using System;
 
 	using MasDen.RichFileManager.DotNetConnector.Components.Actions;
+	using MasDen.RichFileManager.DotNetConnector.Constants;
 	using MasDen.RichFileManager.DotNetConnector.Interfaces;
 
 	using Microsoft.AspNetCore.Http;
@@ -24,15 +25,6 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 	/// </summary>
 	public static class ActionFactory
 	{
-		#region Constants
-
-		/// <summary>
-		/// The mode query key
-		/// </summary>
-		private const string ModeQueryKey = "mode";
-
-		#endregion
-
 		#region Public Methods
 
 		/// <summary>
@@ -46,11 +38,11 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 
 			if(context.Request.Method == "POST")
 			{
-				mode = context.Request?.Form?[ModeQueryKey];
+				mode = context.Request?.Form?[RequestKeys.Mode];
 			}
 			else
 			{
-				mode = context.Request.Query[ModeQueryKey];
+				mode = context.Request.Query[RequestKeys.Mode];
 			}
 
 			var fileManager = context.RequestServices.GetService<IFileManager>();
@@ -86,6 +78,9 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 
 				case "copy":
 					return new CopyCommand(context.Request.Query, fileManager);
+
+				case "savefile":
+					return new SaveFileCommand(context.Request, fileManager);
 
 				default:
 					throw new InvalidOperationException();

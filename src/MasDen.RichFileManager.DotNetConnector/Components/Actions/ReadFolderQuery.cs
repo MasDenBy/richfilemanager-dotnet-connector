@@ -61,7 +61,7 @@ namespace MasDen.RichFileManager.DotNetConnector.Components.Actions
 		/// <param name="response">The HTTP response.</param>
 		public override async Task Execute(HttpResponse response)
 		{
-			var result = new CommandResultCollection(this.fileManager.GetFolder(this.path));
+			var result = new ActionResultCollection(this.fileManager.GetFolder(this.path));
 
 			await response.WriteAsync(this.SerializeToJson(result));
 		}

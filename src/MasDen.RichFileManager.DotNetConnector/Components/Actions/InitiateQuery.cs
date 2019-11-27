@@ -61,7 +61,7 @@ namespace MasDen.RichFileManager.DotNetConnector.Components.Actions
 			attributes.Config.Security = configuration.Security;
 			attributes.Config.Upload = configuration.Upload;
 
-			var result = new CommandResult("/", ItemType.Initiate, attributes);
+			var result = new ActionResult("/", ItemType.Initiate, attributes);
 
 			await response.WriteAsync(this.SerializeToJson(result));
 		}

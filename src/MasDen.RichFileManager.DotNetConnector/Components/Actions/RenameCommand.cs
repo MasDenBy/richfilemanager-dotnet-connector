@@ -69,7 +69,7 @@ namespace MasDen.RichFileManager.DotNetConnector.Components.Actions
 		{
 			var rename = this.fileManager.Rename(this.oldPath, this.newPath);
 
-			await response.WriteAsync(this.SerializeToJson(new CommandResult(rename)));
+			await response.WriteAsync(this.SerializeToJson(new ActionResult(rename)));
 		}
 
 		#endregion

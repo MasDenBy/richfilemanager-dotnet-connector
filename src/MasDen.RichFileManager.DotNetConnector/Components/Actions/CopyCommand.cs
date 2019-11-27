@@ -69,7 +69,7 @@ namespace MasDen.RichFileManager.DotNetConnector.Components.Actions
 		{
 			var item = this.fileManager.Copy(this.source, this.target);
 
-			await response.WriteAsync(this.SerializeToJson(new CommandResult(item)));
+			await response.WriteAsync(this.SerializeToJson(new ActionResult(item)));
 		}
 
 		#endregion

@@ -63,7 +63,7 @@ namespace MasDen.RichFileManager.DotNetConnector.Components.Actions
 		{
 			var result = this.fileManager.Delete(this.path);
 
-			await response.WriteAsync(this.SerializeToJson(new CommandResult(result)));
+			await response.WriteAsync(this.SerializeToJson(new ActionResult(result)));
 		}
 
 		#endregion

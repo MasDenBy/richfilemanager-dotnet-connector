@@ -338,14 +338,18 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 
 		public byte[] ReadFile(string path)
 		{
-			string fullPath = this.GetServerPath(path);
-
-			if (!File.Exists(fullPath))
-			{
-				throw new InvalidOperationException($"The file {path} does not exists.");
-			}
+			var fullPath = GetFileServerPath(path);
 
 			return File.ReadAllBytes(fullPath);
+		}
+
+		public ItemData SaveFile(string path, string content)
+		{
+			var fullPath = GetFileServerPath(path);
+
+			File.WriteAllText(fullPath, content);
+
+			return this.GetFile(path);
 		}
 
 		#endregion
@@ -524,7 +528,7 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 
 		private Entities.FileAttributes CreateFileAttribute(FileInfo file, string path)
 		{
-			Entities.FileAttributes attributes = new Entities.FileAttributes()
+			var attributes = new Entities.FileAttributes()
 			{
 				Created = file.CreationTime,
 				Modified = file.LastWriteTime,
@@ -547,18 +551,24 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 			return attributes;
 		}
 
-		public ItemData GetFile(string path)
+		private ItemData GetFile(string path)
 		{
-			string fullPath = this.GetServerPath(path);
+			var fullPath = this.GetFileServerPath(path);
+			var fileInfo = new FileInfo(fullPath);
+
+			return this.CreateFileItemData(fileInfo, path.Replace(fileInfo.Name, string.Empty));
+		}
+
+		private string GetFileServerPath(string path)
+		{
+			var fullPath = this.GetServerPath(path);
 
 			if (!File.Exists(fullPath))
 			{
 				throw new InvalidOperationException($"The file {path} does not exists.");
 			}
 
-			FileInfo fileInfo = new FileInfo(fullPath);
-
-			return this.CreateFileItemData(fileInfo, path.Replace(fileInfo.Name, string.Empty));
+			return fullPath;
 		}
 
 		#endregion

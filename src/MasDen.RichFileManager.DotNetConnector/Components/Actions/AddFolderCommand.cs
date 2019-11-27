@@ -69,7 +69,7 @@ namespace MasDen.RichFileManager.DotNetConnector.Components.Actions
 		{
 			var folderItemData = this.fileManager.CreateDirectory(this.path, this.name);
 
-			await response.WriteAsync(this.SerializeToJson(new CommandResult(folderItemData)));
+			await response.WriteAsync(this.SerializeToJson(new ActionResult(folderItemData)));
 		}
 
 		#endregion

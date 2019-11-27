@@ -66,7 +66,7 @@ namespace MasDen.RichFileManager.DotNetConnector.Components.Actions
 
 			var result = this.fileManager.Upload(this.request.Form.Files, path);
 
-			await response.WriteAsync(this.SerializeToJson(new CommandResultCollection(result)));
+			await response.WriteAsync(this.SerializeToJson(new ActionResultCollection(result)));
 		}
 
 		#endregion

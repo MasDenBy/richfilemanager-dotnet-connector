@@ -5,41 +5,25 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace MasDen.RichFileManager.DotNetConnector.Test.Constants
+namespace MasDen.RichFileManager.DotNetConnector.Constants
 {
 	/// <summary>
 	/// Represents the names of middleware modes.
 	/// </summary>
 	public static class ModeNames
 	{
-		/// <summary>
-		/// The initiate mode name
-		/// </summary>
 		public const string Initiate = "initiate";
 
-		/// <summary>
-		/// The read folder
-		/// </summary>
 		public const string ReadFolder = "readfolder";
 
-		/// <summary>
-		/// The get image mode name
-		/// </summary>
 		public const string GetImage = "getimage";
 
-		/// <summary>
-		/// The add folder mode name.
-		/// </summary>
 		public const string AddFolder = "addfolder";
 
-		/// <summary>
-		/// The delete mode name.
-		/// </summary>
 		public const string Delete = "delete";
 
-		/// <summary>
-		/// The read file mode name.
-		/// </summary>
 		public const string ReadFile = "readfile";
+
+		public const string SaveFile = "savefile";
 	}
 }

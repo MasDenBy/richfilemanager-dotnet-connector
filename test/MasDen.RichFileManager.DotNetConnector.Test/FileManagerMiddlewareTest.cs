@@ -7,13 +7,15 @@
 
 namespace MasDen.RichFileManager.DotNetConnector.Test
 {
-	using System.IO;
 	#region Usings
 
+	using System.Collections.Generic;
+	using System.IO;
 	using System.Linq;
+	using System.Net.Http;
 	using System.Threading.Tasks;
 
-	using MasDen.RichFileManager.DotNetConnector.Test.Constants;
+	using MasDen.RichFileManager.DotNetConnector.Constants;
 	using MasDen.RichFileManager.DotNetConnector.Test.Infrastructure;
 
 	using Newtonsoft.Json;
@@ -191,6 +193,29 @@ namespace MasDen.RichFileManager.DotNetConnector.Test
 
 			// Assert
 			Assert.AreEqual(expected, fileData);
+		}
+
+		[Test]
+		public async Task Invoke_SaveFile_ShouldRewriteFile()
+		{
+			// Arrange
+			const string newContent = "new content";
+			var oldContent = File.ReadAllText("wwwroot/TestData/file5.txt");
+
+			var form = new FormUrlEncodedContent(new[]
+			{
+				new KeyValuePair<string, string>(RequestKeys.Path, "/file5.txt"),
+				new KeyValuePair<string, string>(RequestKeys.Content, newContent),
+				new KeyValuePair<string, string>(RequestKeys.Mode, ModeNames.SaveFile)
+			});
+
+			// Act
+			var modifiedFile = await this.Client.PostAsync($"{RichFileManagerConnectorUrl}", form);
+			var actualContent = await this.GetContentAsync($"{RichFileManagerConnectorUrl}?mode={ModeNames.ReadFile}&path=%2Ffile5.txt");
+
+			// Assert
+			Assert.IsNotNull(modifiedFile);
+			Assert.AreNotEqual(oldContent, actualContent);
 		}
 
 		#endregion
