@@ -39,7 +39,7 @@ namespace MasDen.RichFileManager.DotNetConnector
 		/// </returns>
 		public static IServiceCollection AddRichFileManager(this IServiceCollection services, IConfiguration configuration)
 		{
-			return services.AddRichFileManager(configuration, typeof(DefaultConfigurationManager));
+			return services.AddRichFileManager(configuration, typeof(ConfigurationManager));
 		}
 
 		/// <summary>

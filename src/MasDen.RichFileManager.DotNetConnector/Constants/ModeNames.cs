@@ -13,17 +13,15 @@ namespace MasDen.RichFileManager.DotNetConnector.Constants
 	public static class ModeNames
 	{
 		public const string Initiate = "initiate";
-
 		public const string ReadFolder = "readfolder";
-
 		public const string GetImage = "getimage";
-
 		public const string AddFolder = "addfolder";
-
 		public const string Delete = "delete";
-
 		public const string ReadFile = "readfile";
-
 		public const string SaveFile = "savefile";
+		public const string Upload = "upload";
+		public const string Rename = "rename";
+		public const string Move = "move";
+		public const string Copy = "copy";
 	}
 }

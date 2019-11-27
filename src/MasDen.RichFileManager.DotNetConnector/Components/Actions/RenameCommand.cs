@@ -11,7 +11,7 @@ namespace MasDen.RichFileManager.DotNetConnector.Components.Actions
 
 	using System.Threading.Tasks;
 
-	using MasDen.RichFileManager.DotNetConnector.Entities;
+	using MasDen.RichFileManager.DotNetConnector.Extensions;
 	using MasDen.RichFileManager.DotNetConnector.Interfaces;
 
 	using Microsoft.AspNetCore.Http;
@@ -21,55 +21,35 @@ namespace MasDen.RichFileManager.DotNetConnector.Components.Actions
 	/// <summary>
 	/// Represents the command which renames an existed file or folder.
 	/// </summary>
-	/// <seealso cref="MasDen.RichFileManager.DotNetConnector.Components.Commands.ActionBase" />
+	/// <seealso cref="MasDen.RichFileManager.DotNetConnector.Components.Actions.ActionBase" />
 	public class RenameCommand : ActionBase
 	{
 		#region Private Fields
 
-		/// <summary>
-		/// The file manager
-		/// </summary>
-		private readonly IFileManager fileManager;
-
-		/// <summary>
-		/// The old path
-		/// </summary>
 		private readonly string oldPath;
 
-		/// <summary>
-		/// The new path
-		/// </summary>
 		private readonly string newPath;
 
 		#endregion
 
 		#region Constructors
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="RenameCommand" /> class.
-		/// </summary>
-		/// <param name="query">The query.</param>
-		/// <param name="fileManager">The file manager.</param>
-		public RenameCommand(IQueryCollection query, IFileManager fileManager)
+		public RenameCommand(HttpContext httpContext)
+			: base(httpContext)
 		{
-			this.fileManager = fileManager;
-			this.oldPath = query["old"];
-			this.newPath = query["new"];
+			this.oldPath = httpContext.Request.GetOld();
+			this.newPath = httpContext.Request.GetNew();
 		}
 
 		#endregion
 
-		#region CommandBase Members
+		#region ActionBase Members
 
-		/// <summary>
-		/// Executes the specified response.
-		/// </summary>
-		/// <param name="response">The HTTP response.</param>
-		public override async Task Execute(HttpResponse response)
+		public override async Task Execute()
 		{
-			var rename = this.fileManager.Rename(this.oldPath, this.newPath);
+			var rename = this.GetService<IFileManager>().Rename(this.oldPath, this.newPath);
 
-			await response.WriteAsync(this.SerializeToJson(new ActionResult(rename)));
+			await this.Response(rename);
 		}
 
 		#endregion

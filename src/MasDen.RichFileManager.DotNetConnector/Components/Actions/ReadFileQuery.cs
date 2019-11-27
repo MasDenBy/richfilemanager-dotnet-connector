@@ -9,9 +9,9 @@ namespace MasDen.RichFileManager.DotNetConnector.Components.Actions
 {
 	#region Usings
 
-	using System.IO;
 	using System.Threading.Tasks;
 
+	using MasDen.RichFileManager.DotNetConnector.Extensions;
 	using MasDen.RichFileManager.DotNetConnector.Interfaces;
 
 	using Microsoft.AspNetCore.Http;
@@ -26,47 +26,28 @@ namespace MasDen.RichFileManager.DotNetConnector.Components.Actions
 	{
 		#region Private Fields
 
-		/// <summary>
-		/// The file manager
-		/// </summary>
-		private readonly IFileManager fileManager;
-
-		/// <summary>
-		/// The path
-		/// </summary>
 		private readonly string path;
 
 		#endregion
 
 		#region Constructors
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="ReadFileQuery" /> class.
-		/// </summary>
-		/// <param name="query">The query.</param>
-		/// <param name="fileManager">The file manager.</param>
-		public ReadFileQuery(IQueryCollection query, IFileManager fileManager)
+		public ReadFileQuery(HttpContext httpContext)
+			: base(httpContext)
 		{
-			this.fileManager = fileManager;
-			this.path = query["path"];
+			this.path = httpContext.Request.GetPath();
 		}
 
 		#endregion
 
 		#region ActionBase Members
 
-		/// <summary>
-		/// Executes the specified response.
-		/// </summary>
-		/// <param name="response">The HTTP response.</param>
-		public override async Task Execute(HttpResponse response)
+		public override async Task Execute()
 		{
-			var fileContent = this.fileManager.ReadFile(this.path);
+			var fileManager = this.GetService<IFileManager>();
+			var fileData = fileManager.GetFileData(this.path);
 
-			using (var ms = new MemoryStream(fileContent))
-			{
-				await ms.CopyToAsync(response.Body);
-			}
+			await this.ResponseFile(fileData);
 		}
 
 		#endregion

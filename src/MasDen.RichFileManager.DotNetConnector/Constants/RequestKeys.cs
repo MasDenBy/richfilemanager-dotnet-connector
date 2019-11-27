@@ -12,5 +12,10 @@ namespace MasDen.RichFileManager.DotNetConnector.Constants
 		public const string Mode = "mode";
 		public const string Path = "path";
 		public const string Content = "content";
+		public const string Name = "name";
+		public const string Old = "old";
+		public const string New = "new";
+		public const string Source = "source";
+		public const string Target = "target";
 	}
 }

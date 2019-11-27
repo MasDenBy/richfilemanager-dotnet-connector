@@ -11,7 +11,7 @@ namespace MasDen.RichFileManager.DotNetConnector.Components.Actions
 
 	using System.Threading.Tasks;
 
-	using MasDen.RichFileManager.DotNetConnector.Entities;
+	using MasDen.RichFileManager.DotNetConnector.Extensions;
 	using MasDen.RichFileManager.DotNetConnector.Interfaces;
 
 	using Microsoft.AspNetCore.Http;
@@ -26,47 +26,31 @@ namespace MasDen.RichFileManager.DotNetConnector.Components.Actions
 	{
 		#region Private Fields
 
-		/// <summary>
-		/// The request
-		/// </summary>
-		private readonly HttpRequest request;
+		private readonly string path;
 
-		/// <summary>
-		/// The file manager
-		/// </summary>
-		private readonly IFileManager fileManager;
+		private readonly IFormFileCollection files;
 
 		#endregion
 
 		#region Constructors
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="UploadCommand" /> class.
-		/// </summary>
-		/// <param name="request">The request.</param>
-		/// <param name="fileManager">The file manager.</param>
-		public UploadCommand(HttpRequest request, IFileManager fileManager)
+		public UploadCommand(HttpContext httpContext)
+			: base(httpContext)
 		{
-			this.request = request;
-			this.fileManager = fileManager;
+			this.path = httpContext.Request.GetPath();
+			this.files = httpContext.Request.Form.Files;
 		}
 
 		#endregion
 
-		#region CommandBase Members
+		#region ActionBase Members
 
-		/// <summary>
-		/// Executes the specified response.
-		/// </summary>
-		/// <param name="response">The HTTP response.</param>
-		/// <returns></returns>
-		public override async Task Execute(HttpResponse response)
+		public override async Task Execute()
 		{
-			string path = this.request.Form["path"];
+			var fileManager = this.GetService<IFileManager>();
+			var result = fileManager.Upload(this.files, this.path);
 
-			var result = this.fileManager.Upload(this.request.Form.Files, path);
-
-			await response.WriteAsync(this.SerializeToJson(new ActionResultCollection(result)));
+			await this.Response(result);
 		}
 
 		#endregion

@@ -14,7 +14,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MasDen.RichFileManager.DotNetConnector", "src\MasDen.RichFileManager.DotNetConnector\MasDen.RichFileManager.DotNetConnector.csproj", "{FABEA8F9-0BB3-46EE-9363-99A65802AB63}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MasDen.RichFileManager.DotNetConnector.Test", "test\MasDen.RichFileManager.DotNetConnector.Test\MasDen.RichFileManager.DotNetConnector.Test.csproj", "{2FEEB0B1-C0D9-4F44-8C46-157DD264F35C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MasDen.RichFileManager.DotNetConnector.IntegrationTest", "test\MasDen.RichFileManager.DotNetConnector.IntegrationTest\MasDen.RichFileManager.DotNetConnector.IntegrationTest.csproj", "{2FEEB0B1-C0D9-4F44-8C46-157DD264F35C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MasDen.RichFileManager.DotNetConnector.Test", "test\MasDen.RichFileManager.DotNetConnector.Test\MasDen.RichFileManager.DotNetConnector.Test.csproj", "{71607609-91BD-4DF2-B7B7-36F99BE6A17A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,6 +32,10 @@ Global
 		{2FEEB0B1-C0D9-4F44-8C46-157DD264F35C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2FEEB0B1-C0D9-4F44-8C46-157DD264F35C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2FEEB0B1-C0D9-4F44-8C46-157DD264F35C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71607609-91BD-4DF2-B7B7-36F99BE6A17A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71607609-91BD-4DF2-B7B7-36F99BE6A17A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71607609-91BD-4DF2-B7B7-36F99BE6A17A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71607609-91BD-4DF2-B7B7-36F99BE6A17A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -37,6 +43,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{FABEA8F9-0BB3-46EE-9363-99A65802AB63} = {3A307B07-284A-4006-8C6E-72C7CE1FED59}
 		{2FEEB0B1-C0D9-4F44-8C46-157DD264F35C} = {936019E7-66C4-4682-9A26-421CFF1952F9}
+		{71607609-91BD-4DF2-B7B7-36F99BE6A17A} = {936019E7-66C4-4682-9A26-421CFF1952F9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7499E352-1C37-4DB9-AF85-9BF88A99DE61}

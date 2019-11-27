@@ -22,40 +22,24 @@ namespace MasDen.RichFileManager.DotNetConnector.Components.Actions
 	/// <summary>
 	/// Represents the "initiate" query.
 	/// </summary>
-	/// <seealso cref="MasDen.RichFileManager.DotNetConnector.Components.Commands.ActionBase" />
+	/// <seealso cref="MasDen.RichFileManager.DotNetConnector.Components.Actions.ActionBase" />
 	public class InitiateQuery : ActionBase
 	{
-		#region Private Fields
-
-		/// <summary>
-		/// The configuration manager
-		/// </summary>
-		private readonly IConfigurationManager configurationManager;
-
-		#endregion
-
 		#region Constructors
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="InitiateQuery" /> class.
-		/// </summary>
-		/// <param name="configurationManager">The configuration manager.</param>
-		public InitiateQuery(IConfigurationManager configurationManager)
+		public InitiateQuery(HttpContext httpContext)
+			: base(httpContext)
 		{
-			this.configurationManager = configurationManager;
 		}
 
 		#endregion
 
-		#region CommandBase Members
+		#region ActionBase Members
 
-		/// <summary>
-		/// Executes the specified response.
-		/// </summary>
-		/// <param name="response">The HTTP response.</param>
-		public override async Task Execute(HttpResponse response)
+		public override async Task Execute()
 		{
-			var configuration = this.configurationManager.GetConfiguration();
+			var configurationManager = this.GetService<IConfigurationManager>();
+			var configuration = configurationManager.GetConfiguration();
 
 			var attributes = new InitiateCommandAttributes();
 			attributes.Config.Security = configuration.Security;
@@ -63,7 +47,7 @@ namespace MasDen.RichFileManager.DotNetConnector.Components.Actions
 
 			var result = new ActionResult("/", ItemType.Initiate, attributes);
 
-			await response.WriteAsync(this.SerializeToJson(result));
+			await this.Response(result);
 		}
 
 		#endregion

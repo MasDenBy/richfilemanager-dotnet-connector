@@ -11,7 +11,7 @@ namespace MasDen.RichFileManager.DotNetConnector.Components.Actions
 
 	using System.Threading.Tasks;
 
-	using MasDen.RichFileManager.DotNetConnector.Entities;
+	using MasDen.RichFileManager.DotNetConnector.Extensions;
 	using MasDen.RichFileManager.DotNetConnector.Interfaces;
 
 	using Microsoft.AspNetCore.Http;
@@ -21,49 +21,33 @@ namespace MasDen.RichFileManager.DotNetConnector.Components.Actions
 	/// <summary>
 	/// Represents the delete command.
 	/// </summary>
-	/// <seealso cref="MasDen.RichFileManager.DotNetConnector.Components.Commands.ActionBase" />
+	/// <seealso cref="MasDen.RichFileManager.DotNetConnector.Components.Actions.ActionBase" />
 	public class DeleteCommand : ActionBase
 	{
 		#region Private Fields
 
-		/// <summary>
-		/// The file manager
-		/// </summary>
-		private readonly IFileManager fileManager;
-
-		/// <summary>
-		/// The path
-		/// </summary>
 		private readonly string path;
 
 		#endregion
 
 		#region Constructors
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="DeleteCommand" /> class.
-		/// </summary>
-		/// <param name="query">The query.</param>
-		/// <param name="fileManager">The file manager.</param>
-		public DeleteCommand(IQueryCollection query, IFileManager fileManager)
+		public DeleteCommand(HttpContext httpContext)
+			: base(httpContext)
 		{
-			this.fileManager = fileManager;
-			this.path = query["path"];
+			this.path = httpContext.Request.GetPath();
 		}
 
 		#endregion
 
-		#region CommandBase Members
+		#region ActionBase Members
 
-		/// <summary>
-		/// Executes the specified response.
-		/// </summary>
-		/// <param name="response">The HTTP response.</param>
-		public override async Task Execute(HttpResponse response)
+		public override async Task Execute()
 		{
-			var result = this.fileManager.Delete(this.path);
+			var fileManager = this.GetService<IFileManager>();
+			var result = fileManager.Delete(this.path);
 
-			await response.WriteAsync(this.SerializeToJson(new ActionResult(result)));
+			await this.Response(result);
 		}
 
 		#endregion

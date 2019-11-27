@@ -22,7 +22,7 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 	/// Represents the default configuration manager.
 	/// </summary>
 	/// <seealso cref="MasDen.RichFileManager.DotNetConnector.Interfaces.IConfigurationManager" />
-	public class DefaultConfigurationManager : IConfigurationManager
+	public class ConfigurationManager : IConfigurationManager
 	{
 		#region Private Fields
 
@@ -36,10 +36,10 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 		#region Constructors
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="DefaultConfigurationManager"/> class.
+		/// Initializes a new instance of the <see cref="ConfigurationManager"/> class.
 		/// </summary>
 		/// <param name="options">The options.</param>
-		public DefaultConfigurationManager(IOptions<FileManagerConfiguration> options)
+		public ConfigurationManager(IOptions<FileManagerConfiguration> options)
 		{
 			this.options = options;
 		}

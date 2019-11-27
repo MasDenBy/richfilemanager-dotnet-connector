@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="CopyCommand.cs" author="Ihar Maiseyeu">
+// <copyright file="GetImageQuery.cs" author="Ihar Maiseyeu">
 //     Copyright Ihar Maiseyeu. All rights reserved.
 //     Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 // </copyright>
@@ -19,26 +19,23 @@ namespace MasDen.RichFileManager.DotNetConnector.Components.Actions
 	#endregion
 
 	/// <summary>
-	/// Represents the command which copies file or folder to specified directory.
+	/// Represents the query to get image.
 	/// </summary>
 	/// <seealso cref="MasDen.RichFileManager.DotNetConnector.Components.Actions.ActionBase" />
-	public class CopyCommand : ActionBase
+	public class GetImageQuery : ActionBase
 	{
 		#region Private Fields
 
-		private readonly string source;
-
-		private readonly string target;
+		private readonly string path;
 
 		#endregion
 
 		#region Constructors
 
-		public CopyCommand(HttpContext httpContext)
+		public GetImageQuery(HttpContext httpContext)
 			: base(httpContext)
 		{
-			this.source = httpContext.Request.GetSource();
-			this.target = httpContext.Request.GetTarget();
+			this.path = httpContext.Request.GetPath();
 		}
 
 		#endregion
@@ -47,9 +44,10 @@ namespace MasDen.RichFileManager.DotNetConnector.Components.Actions
 
 		public override async Task Execute()
 		{
-			var item = this.GetService<IFileManager>().Copy(this.source, this.target);
+			var fileManager = this.GetService<IFileManager>();
+			var imageData = fileManager.GetFileData(this.path);
 
-			await this.Response(item);
+			await this.ResponseFile(imageData);
 		}
 
 		#endregion

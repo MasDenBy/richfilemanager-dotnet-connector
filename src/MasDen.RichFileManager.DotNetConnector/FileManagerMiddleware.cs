@@ -71,9 +71,9 @@ namespace MasDen.RichFileManager.DotNetConnector
 			{
 				try
 				{
-					var command = ActionFactory.CreateAction(context);
+					var action = ActionFactory.CreateAction(context);
 
-					await command.Execute(context.Response);
+					await action.Execute();
 				}
 				catch (Exception ex)
 				{

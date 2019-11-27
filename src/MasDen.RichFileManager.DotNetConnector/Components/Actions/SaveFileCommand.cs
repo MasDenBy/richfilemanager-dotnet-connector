@@ -1,41 +1,54 @@
-﻿using System.Threading.Tasks;
-using MasDen.RichFileManager.DotNetConnector.Entities;
-using MasDen.RichFileManager.DotNetConnector.Extensions;
-using MasDen.RichFileManager.DotNetConnector.Interfaces;
-using Microsoft.AspNetCore.Http;
+﻿//-----------------------------------------------------------------------
+// <copyright file="SaveFileCommand.cs" author="Ihar Maiseyeu">
+//     Copyright Ihar Maiseyeu. All rights reserved.
+//     Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// </copyright>
+//-----------------------------------------------------------------------
 
 namespace MasDen.RichFileManager.DotNetConnector.Components.Actions
 {
+	#region Usings
+
+	using System.Threading.Tasks;
+
+	using MasDen.RichFileManager.DotNetConnector.Extensions;
+	using MasDen.RichFileManager.DotNetConnector.Interfaces;
+
+	using Microsoft.AspNetCore.Http;
+
+	#endregion
+
+	/// <summary>
+	/// Represents the command which save file.
+	/// </summary>
+	/// <seealso cref="MasDen.RichFileManager.DotNetConnector.Components.Actions.ActionBase" />
 	public class SaveFileCommand : ActionBase
 	{
 		#region Private Fields
 
-		private readonly HttpRequest request;
-
-		private readonly IFileManager fileManager;
+		private readonly string path;
+		private readonly string content;
 
 		#endregion
 
 		#region Constructors
 
-		public SaveFileCommand(HttpRequest request, IFileManager fileManager)
+		public SaveFileCommand(HttpContext httpContext)
+			: base(httpContext)
 		{
-			this.request = request;
-			this.fileManager = fileManager;
+			this.path = httpContext.Request.GetPath();
+			this.content = httpContext.Request.GetContent();
 		}
 
 		#endregion
 
 		#region Public Methods
 
-		public override async Task Execute(HttpResponse response)
+		public override async Task Execute()
 		{
-			var path = this.request.GetPath();
-			var content = this.request.GetContent();
+			var modifiedFile = this.GetService<IFileManager>().SaveFile(path, content);
 
-			var modifiedFile = this.fileManager.SaveFile(path, content);
-
-			await response.WriteAsync(this.SerializeToJson(new ActionResult(modifiedFile)));
+			await this.Response(modifiedFile);
 		}
 
 		#endregion

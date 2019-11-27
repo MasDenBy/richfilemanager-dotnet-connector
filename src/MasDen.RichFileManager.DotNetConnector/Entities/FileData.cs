@@ -12,6 +12,17 @@ namespace MasDen.RichFileManager.DotNetConnector.Entities
 	/// </summary>
 	public class FileData
 	{
+		#region Constructors
+
+		public FileData(string fileName, string filePath, string contentType)
+		{
+			this.FileName = fileName;
+			this.FilePath = filePath;
+			this.ContentType = contentType;
+		}
+
+		#endregion
+
 		#region Public Properties
 
 		/// <summary>

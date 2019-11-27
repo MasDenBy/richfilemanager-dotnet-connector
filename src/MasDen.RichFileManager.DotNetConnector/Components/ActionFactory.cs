@@ -13,10 +13,9 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 
 	using MasDen.RichFileManager.DotNetConnector.Components.Actions;
 	using MasDen.RichFileManager.DotNetConnector.Constants;
-	using MasDen.RichFileManager.DotNetConnector.Interfaces;
+	using MasDen.RichFileManager.DotNetConnector.Extensions;
 
 	using Microsoft.AspNetCore.Http;
-	using Microsoft.Extensions.DependencyInjection;
 
 	#endregion
 
@@ -34,53 +33,42 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 		/// <returns>The <see cref="ActionBase"/> object.</returns>
 		public static ActionBase CreateAction(HttpContext context)
 		{
-			string mode = string.Empty;
-
-			if(context.Request.Method == "POST")
-			{
-				mode = context.Request?.Form?[RequestKeys.Mode];
-			}
-			else
-			{
-				mode = context.Request.Query[RequestKeys.Mode];
-			}
-
-			var fileManager = context.RequestServices.GetService<IFileManager>();
+			var mode = context.Request.GetMode();
 
 			switch (mode)
 			{
-				case "initiate":
-					return new InitiateQuery(context.RequestServices.GetService<IConfigurationManager>());
+				case ModeNames.Initiate:
+					return new InitiateQuery(context);
 
-				case "readfolder":
-					return new ReadFolderQuery(context.Request.Query, fileManager);
+				case ModeNames.ReadFolder:
+					return new ReadFolderQuery(context);
 
-				case "getimage":
-					return new GetImageCommand(context.Request.Query, fileManager);
+				case ModeNames.GetImage:
+					return new GetImageQuery(context);
 
-				case "addfolder":
-					return new AddFolderCommand(context.Request.Query, fileManager);
+				case ModeNames.AddFolder:
+					return new AddFolderCommand(context);
 
-				case "delete":
-					return new DeleteCommand(context.Request.Query, fileManager);
+				case ModeNames.Delete:
+					return new DeleteCommand(context);
 
-				case "readfile":
-					return new ReadFileQuery(context.Request.Query, fileManager);
+				case ModeNames.ReadFile:
+					return new ReadFileQuery(context);
 
-				case "upload":
-					return new UploadCommand(context.Request, fileManager);
+				case ModeNames.Upload:
+					return new UploadCommand(context);
 
-				case "rename":
-					return new RenameCommand(context.Request.Query, fileManager);
+				case ModeNames.Rename:
+					return new RenameCommand(context);
 
-				case "move":
-					return new MoveCommand(context.Request.Query, fileManager);
+				case ModeNames.Move:
+					return new MoveCommand(context);
 
-				case "copy":
-					return new CopyCommand(context.Request.Query, fileManager);
+				case ModeNames.Copy:
+					return new CopyCommand(context);
 
-				case "savefile":
-					return new SaveFileCommand(context.Request, fileManager);
+				case ModeNames.SaveFile:
+					return new SaveFileCommand(context);
 
 				default:
 					throw new InvalidOperationException();

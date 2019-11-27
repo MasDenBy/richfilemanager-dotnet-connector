@@ -122,12 +122,7 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 
 			FileInfo fileInfo = new FileInfo(serverPath);
 
-			return new FileData()
-			{
-				ContentType = FileManager.GetContentType(fileInfo.Name),
-				FileName = fileInfo.Name,
-				FilePath = serverPath
-			};
+			return new FileData(fileInfo.Name, serverPath, FileManager.GetContentType(fileInfo.Name));
 		}
 
 		/// <summary>
