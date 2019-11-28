@@ -84,8 +84,6 @@ namespace MasDen.RichFileManager.DotNetConnector.Interfaces
 		/// <returns>The <see cref="ItemData"/> object.</returns>
 		ItemData Copy(string source, string target);
 
-		byte[] ReadFile(string path);
-
 		ItemData SaveFile(string path, string content);
 	}
 }

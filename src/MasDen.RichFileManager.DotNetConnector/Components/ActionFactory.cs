@@ -14,6 +14,7 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 	using MasDen.RichFileManager.DotNetConnector.Components.Actions;
 	using MasDen.RichFileManager.DotNetConnector.Constants;
 	using MasDen.RichFileManager.DotNetConnector.Extensions;
+	using MasDen.RichFileManager.DotNetConnector.Interfaces;
 
 	using Microsoft.AspNetCore.Http;
 
@@ -22,7 +23,7 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 	/// <summary>
 	/// Represents the factory component which creates all actions.
 	/// </summary>
-	public static class ActionFactory
+	public class ActionFactory : IActionFactory
 	{
 		#region Public Methods
 
@@ -31,7 +32,7 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 		/// </summary>
 		/// <param name="query">The query.</param>
 		/// <returns>The <see cref="ActionBase"/> object.</returns>
-		public static ActionBase CreateAction(HttpContext context)
+		public ActionBase CreateAction(HttpContext context)
 		{
 			var mode = context.Request.GetMode();
 

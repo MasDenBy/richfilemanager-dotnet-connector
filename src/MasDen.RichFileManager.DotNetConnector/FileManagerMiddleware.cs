@@ -12,10 +12,11 @@ namespace MasDen.RichFileManager.DotNetConnector
 	using System;
 	using System.Threading.Tasks;
 
-	using MasDen.RichFileManager.DotNetConnector.Components;
 	using MasDen.RichFileManager.DotNetConnector.Entities;
+	using MasDen.RichFileManager.DotNetConnector.Interfaces;
 
 	using Microsoft.AspNetCore.Http;
+	using Microsoft.Extensions.DependencyInjection;
 
 	using Newtonsoft.Json;
 
@@ -71,7 +72,8 @@ namespace MasDen.RichFileManager.DotNetConnector
 			{
 				try
 				{
-					var action = ActionFactory.CreateAction(context);
+					var actionFactory = context.RequestServices.GetService<IActionFactory>();
+					var action = actionFactory.CreateAction(context);
 
 					await action.Execute();
 				}

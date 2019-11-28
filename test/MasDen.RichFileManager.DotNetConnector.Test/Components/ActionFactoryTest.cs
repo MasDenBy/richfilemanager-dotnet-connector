@@ -32,7 +32,7 @@ namespace MasDen.RichFileManager.DotNetConnector.Test.Components
 			var httpContext = CreateHttpContextMock(mode, method);
 
 			// Act
-			var action = ActionFactory.CreateAction(httpContext);
+			var action = new ActionFactory().CreateAction(httpContext);
 
 			// Assert
 			Assert.AreEqual(expectedAction, action.GetType());
@@ -45,7 +45,7 @@ namespace MasDen.RichFileManager.DotNetConnector.Test.Components
 			var httpContext = CreateHttpContextMock("invalid", "GET");
 
 			// Act & Assert
-			Assert.Throws<InvalidOperationException>(() => ActionFactory.CreateAction(httpContext));
+			Assert.Throws<InvalidOperationException>(() => new ActionFactory().CreateAction(httpContext));
 		}
 
 		#endregion

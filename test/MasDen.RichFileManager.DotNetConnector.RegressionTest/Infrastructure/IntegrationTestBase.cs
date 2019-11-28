@@ -5,7 +5,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace MasDen.RichFileManager.DotNetConnector.Test.Infrastructure
+namespace MasDen.RichFileManager.DotNetConnector.RegressionTest.Infrastructure
 {
 	#region Usings
 

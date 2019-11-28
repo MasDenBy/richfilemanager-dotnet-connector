@@ -10,7 +10,6 @@ namespace MasDen.RichFileManager.DotNetConnector
 	#region Usings
 
 	using System;
-	using System.Reflection;
 
 	using MasDen.RichFileManager.DotNetConnector.Components;
 	using MasDen.RichFileManager.DotNetConnector.Entities.Configuration;
@@ -64,6 +63,7 @@ namespace MasDen.RichFileManager.DotNetConnector
 
 			services.AddTransient<IFileManager, FileManager>();
 			services.AddTransient(typeof(IConfigurationManager), configurationManager);
+			services.AddTransient<IActionFactory, ActionFactory>();
 
 			services.Configure<FileManagerConfiguration>(configuration);
 

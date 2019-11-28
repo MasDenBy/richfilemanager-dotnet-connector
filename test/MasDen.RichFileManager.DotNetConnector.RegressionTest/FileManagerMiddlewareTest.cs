@@ -5,7 +5,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace MasDen.RichFileManager.DotNetConnector.Test
+namespace MasDen.RichFileManager.DotNetConnector.RegressionTest
 {
 	#region Usings
 
@@ -16,7 +16,7 @@ namespace MasDen.RichFileManager.DotNetConnector.Test
 	using System.Threading.Tasks;
 
 	using MasDen.RichFileManager.DotNetConnector.Constants;
-	using MasDen.RichFileManager.DotNetConnector.Test.Infrastructure;
+	using MasDen.RichFileManager.DotNetConnector.RegressionTest.Infrastructure;
 
 	using Newtonsoft.Json;
 	using Newtonsoft.Json.Linq;

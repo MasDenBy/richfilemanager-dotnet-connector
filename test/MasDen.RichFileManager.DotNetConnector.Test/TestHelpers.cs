@@ -11,10 +11,7 @@ namespace MasDen.RichFileManager.DotNetConnector.Test
 
 		public static HttpContext CreateHttpContextMock(string mode, string method)
 		{
-			var httpRequest = Substitute.For<HttpRequest>();
-			httpRequest.Method.Returns(method);
-			httpRequest.Query = Substitute.For<IQueryCollection>();
-			httpRequest.Form = Substitute.For<IFormCollection>();
+			var httpRequest = CreateHttpRequestMock(method);
 			AddQueryKey(httpRequest.Query, RequestKeys.Mode, mode);
 			AddFormKey(httpRequest.Form, RequestKeys.Mode, mode);
 
@@ -22,6 +19,16 @@ namespace MasDen.RichFileManager.DotNetConnector.Test
 			httpContext.Request.Returns(httpRequest);
 
 			return httpContext;
+		}
+
+		public static HttpRequest CreateHttpRequestMock(string method)
+		{
+			var httpRequest = Substitute.For<HttpRequest>();
+			httpRequest.Method.Returns(method);
+			httpRequest.Query = Substitute.For<IQueryCollection>();
+			httpRequest.Form = Substitute.For<IFormCollection>();
+
+			return httpRequest;
 		}
 
 		public static void AddQueryKey(IQueryCollection query, string key, string value)

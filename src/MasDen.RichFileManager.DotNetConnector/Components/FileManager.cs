@@ -331,13 +331,6 @@ namespace MasDen.RichFileManager.DotNetConnector.Components
 			}
 		}
 
-		public byte[] ReadFile(string path)
-		{
-			var fullPath = GetFileServerPath(path);
-
-			return File.ReadAllBytes(fullPath);
-		}
-
 		public ItemData SaveFile(string path, string content)
 		{
 			var fullPath = GetFileServerPath(path);

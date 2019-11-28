@@ -9,10 +9,10 @@ using System.Reflection;
 using System.Resources;
 
 [assembly: AssemblyProduct("The dotnet connector for RichFilemanager")]
-[assembly: AssemblyCopyrightAttribute("Ihar Maiseyeu, 2017")]
+[assembly: AssemblyCopyrightAttribute("Ihar Maiseyeu, 2019")]
 [assembly: AssemblyCompany("Ihar Maiseyeu")]
 [assembly: AssemblyCulture("")]
 [assembly: AssemblyTrademark("")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.1.0.0")]
+[assembly: AssemblyFileVersion("1.1.0.0")]
 [assembly: NeutralResourcesLanguageAttribute("en-US")]
