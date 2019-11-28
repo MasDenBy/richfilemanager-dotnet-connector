@@ -8,11 +8,24 @@ richfilemanager-dotnet-connector is a connector which helps use [RichFilemanager
 ```
 Install-Package MasDen.RichFileManager.DotNetConnector
 ```
-3. Create configuration ([more about configuration](https://github.com/servocoder/RichFilemanager/wiki/Configuration-options)). RootPath is required.
+3. Create configuration ([more about configuration](https://github.com/servocoder/RichFilemanager/wiki/Configuration-options)). The following configuration items are required.
 ```
 "Filemanager": {
-  "RootPath": "Files"
-}
+    "RootPath": "Files",
+    "security": {
+      "readOnly": false,
+      "extensions": {
+        "policy": "ALLOW_LIST",
+        "ignoreCase": true,
+        "restrictions": [
+          "jpg",
+          "bmp",
+          "png",
+          "txt"
+        ]
+      }
+    }
+  }
 ```
 4. In Startup.cs
 
